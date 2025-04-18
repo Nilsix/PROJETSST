@@ -39,6 +39,12 @@
                 <input type="text" name="prenomAgent" class="form-control" placeholder="Prénom">
             </div>
         </div>
+        <div class="row mb-3 align-items-center">
+            <label for="site" class="col-sm-3 col-form-label text-end">Site</label>
+            <div class="col-sm-6">
+                <input type="text" name="site" class="form-control" placeholder="Site">
+            </div>
+        </div>
         <div class="row mb-3">
             <div class="offset-sm-3 col-sm-3 d-grid">
                 <button type="submit" class="btn btn-primary">Créer</button>

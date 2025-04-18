@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('numAgent')->unique();
             $table->string('nomAgent');
             $table->string('prenomAgent');
+            $table->string('site');
             $table->timestamps();
         });
     }

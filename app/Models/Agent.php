@@ -12,7 +12,6 @@ class Agent extends Model
         'numAgent',
         'nomAgent',
         'prenomAgent',
-        'vision',
         'site',
     ];
 }

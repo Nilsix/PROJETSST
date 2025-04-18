@@ -19,12 +19,14 @@ class AgentController extends Controller
         $data = $request->validate([
             "numAgent" => "required|unique:agents,numAgent",
             "nomAgent" => "required",
-            "prenomAgent" => "required"
+            "prenomAgent" => "required",
+            "site" => "required"
         ], [
             "numAgent.required" => "Le numéro de l'agent est requis",
             "numAgent.unique" => "Le numéro de l'agent doit être unique",
             "nomAgent.required" => "Le nom de l'agent est requis",
-            "prenomAgent.required" => "Le prénom de l'agent est requis"
+            "prenomAgent.required" => "Le prénom de l'agent est requis",
+            "site.required" => "Le site de l'agent est requis"
         ]);
         Agent::create($data);
         return redirect()->route('agent.index');
@@ -37,12 +39,14 @@ class AgentController extends Controller
         $data = $request->validate([
             "numAgent" => ["required",Rule::unique('agents','numAgent')->ignore($agent->id)],
             "nomAgent" => "required",
-            "prenomAgent" => "required"
+            "prenomAgent" => "required",
+            "site" => "required"
         ], [
             "numAgent.required" => "Le numéro de l'agent est requis",
             "numAgent.unique" => "Le numéro de l'agent doit être unique",
             "nomAgent.required" => "Le nom de l'agent est requis",
-            "prenomAgent.required" => "Le prénom de l'agent est requis"
+            "prenomAgent.required" => "Le prénom de l'agent est requis",
+            "site.required" => "Le site de l'agent est requis"
         ]);
         $agent->update($data);
         return redirect()->route('agent.index')->with('success','Agent modifié avec succès');

@@ -14,7 +14,7 @@
             </div>
         @endif
         <h1>Agents</h1>
-        <a href="{{route('agent.create')}}" >Ajouter un agent</a>
+        <a class="btn btn-primary" href="{{route('agent.create')}}" >Ajouter un agent</a>
         <table class="table">
             <thead> 
                 <tr>
