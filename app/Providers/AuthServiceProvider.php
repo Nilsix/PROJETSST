@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Agent;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -25,4 +27,5 @@ class AuthServiceProvider extends ServiceProvider
         });
 
     }
+    
 }

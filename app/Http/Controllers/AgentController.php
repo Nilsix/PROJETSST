@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Agent;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Gate;
 
 class AgentController extends Controller
 {
@@ -32,10 +33,16 @@ class AgentController extends Controller
         return redirect()->route('agent.index');
      }
     public function edit(Agent $agent){
+        if(Gate::denies('see-agent',$agent)){
+            abort(403,"Tu n'as pas l'autorisation d'accéder sur cette page");
+        }
         return view('agent.edit', ["agent" => $agent]);
     }
 
     public function update(Agent $agent,Request $request){
+        if(Gate::denies('see-agent',$agent)){
+            abort(403,"Tu n'as pas l'autorisation d'accéder sur cette page");
+        }
         $data = $request->validate([
             "numAgent" => ["required",Rule::unique('agents','numAgent')->ignore($agent->id)],
             "nomAgent" => "required",
@@ -52,6 +59,9 @@ class AgentController extends Controller
         return redirect()->route('agent.index')->with('success','Agent modifié avec succès');
     }
     public function destroy(Agent $agent){
+        if(Gate::denies('see-agent',$agent)){
+            abort(403,"Tu n'as pas l'autorisation d'accéder sur cette page");
+        }
         $agent->delete();
         return redirect()->route('agent.index')->with('success','Agent supprimé avec succès');
     }

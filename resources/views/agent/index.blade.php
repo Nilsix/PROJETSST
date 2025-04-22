@@ -14,21 +14,35 @@
             </div>
         @endif
         <h1>Agents</h1>
-        <a class="btn btn-primary" href="{{route('agent.create')}}" >Ajouter un agent</a>
+        <div class="row mb-3">
+            <div class="col sm-3 d-grid">
+            <a class="btn btn-primary" href="{{route('agent.create')}}" >Ajouter un agent</a>
+            </div>
+            <div class="col sm-3">
+            </div>
+            <div class="col sm-3">
+            </div>
+            <div class="col sm-3 d-grid">
+            <a class="btn btn-secondary" href="{{route('dashboard')}}" >Retour</a>
+            </div>
+        </div>
         <table class="table">
             <thead> 
                 <tr>
                     <th>NumAgent</th>
                     <th>Nom </th>
                     <th>Prenom</th>
+                    <th>Site</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($agents as $agent)
+                @can('see-agent', $agent)
                 <tr>
                     <td>{{$agent->numAgent}}</td>
                     <td>{{$agent->nomAgent}}</td>
                     <td>{{$agent->prenomAgent}}</td>
+                    <td>{{$agent->site}}</td>
                     <td>
                         <a href="{{route('agent.edit',['agent' => $agent ])}}" class='btn btn-primary'>Modifier</a>
                         <form action="{{route('agent.destroy',['agent' => $agent ])}}" method="post" class="d-inline">
@@ -38,6 +52,7 @@
                         </form>
                     </td>
                 </tr>
+                @endcan
                 @endforeach
             </tbody>
         </table> 

@@ -38,15 +38,26 @@
                 <input type="text" name="prenomAgent" class="form-control" value="{{ $agent->prenomAgent }}">
             </div>
         </div>
-        <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">Site</label>
-            <div class="col-sm-6">
-                <input type="text" name="site" class="form-control" value="{{ $agent->site }}">
+        <?php 
+        $user = auth()->user();
+        if($user->vision == 2){
+            echo "
+        <div class='row mb-3'>
+            <label class='col-sm-3 col-form-label'>Site</label>
+            <div class='col-sm-6'>
+                <input type='text' name='site' class='form-control' value='{{ $agent->site }}'>
             </div>
         </div>
+        ";
+        }
+        ?>
         <div class="row mb-3">
             <div class="offset-sm-3 col-sm-3 d-grid">
                 <button type="submit" class="btn btn-primary">Modifier</button>
+            </div>
+
+            <div class="col-sm-3 d-grid">
+                <a href="{{route('agent.index')}}" class="btn btn-secondary d-inline">Retour</a>
             </div>
         </div>
     </form>
