@@ -33,6 +33,7 @@
                     <th>Nom </th>
                     <th>Prenom</th>
                     <th>Site</th>
+                    <th>Date de création</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,6 +44,7 @@
                     <td>{{$agent->nomAgent}}</td>
                     <td>{{$agent->prenomAgent}}</td>
                     <td>{{$agent->site}}</td>
+                    <td>{{$agent->created_at}}</td>
                     <td>
                         <a href="{{route('agent.edit',['agent' => $agent ])}}" class='btn btn-primary'>Modifier</a>
                         <form action="{{route('agent.destroy',['agent' => $agent ])}}" method="post" class="d-inline">
@@ -58,4 +60,17 @@
         </table> 
     </div>
 </body>
+
+<script> 
+setTimeout(()=>{
+    const flash = document.querySelectorAll(".alert");
+    if(flash){
+        flash.forEach(f => {
+            f.style.transition = "opacity 0.5s ease";
+            f.style.opacity = 0;
+            setTimeout(()=> f.remove(),500);
+        });
+    }
+}, 3000);
+</script>
 </html>

@@ -30,7 +30,7 @@ class AgentController extends Controller
             "site.required" => "Le site de l'agent est requis"
         ]);
         Agent::create($data);
-        return redirect()->route('agent.index');
+        return redirect()->route('agent.index')->with("success","Agent crée avec succès");
      }
     public function edit(Agent $agent){
         if(Gate::denies('see-agent',$agent)){

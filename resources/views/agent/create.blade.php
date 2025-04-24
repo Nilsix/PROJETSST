@@ -48,7 +48,6 @@
             <div class='col-sm-6'>
                 <input type='text' name='site' class='form-control' placeholder='Site'>
             </div>
-            
         </div>
         ";}
         else{
