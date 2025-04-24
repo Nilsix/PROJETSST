@@ -14,4 +14,8 @@ class Agent extends Model
         'prenomAgent',
         'site',
     ];
+
+    public function site(){
+        return $this->belongsTo(Site::class);
+    }
 }
