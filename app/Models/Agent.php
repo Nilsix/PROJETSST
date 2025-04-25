@@ -12,10 +12,11 @@ class Agent extends Model
         'numAgent',
         'nomAgent',
         'prenomAgent',
-        'site',
+        'site_id',
     ];
 
     public function site(){
         return $this->belongsTo(Site::class);
     }
+
 }

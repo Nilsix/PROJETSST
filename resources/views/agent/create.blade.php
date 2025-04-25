@@ -44,10 +44,12 @@
         if($user->vision == 2){
             echo "
         <div class='row mb-3 align-items-center'>
-            <label for='site' class='col-sm-3 col-form-label text-end'>Site</label>
-            <div class='col-sm-6'>
-                <input type='text' name='site' class='form-control' placeholder='Site'>
-            </div>
+            <select name='site_id' class='form-control'>
+            <option value=''>Selectionner un site </option>
+            @foreach($sites as $site)
+            <option value='{{$site->id}}'> {{$site->nomSite}} </option>
+            @endforeach
+            </select>
         </div>
         ";}
         else{

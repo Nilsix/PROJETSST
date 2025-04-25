@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Site extends Model
@@ -13,5 +14,8 @@ class Site extends Model
 
     public function agents(){
         return $this->hasMany(Agent::class);
+    }
+    public function users(){
+        return $this->hasMany(User::class);
     }
 }

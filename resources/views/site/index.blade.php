@@ -13,51 +13,43 @@
                 {{ session('success') }}
             </div>
         @endif
-        <h1>Agents</h1>
+        <h1>Sites</h1>
         <div class="row mb-3">
             <div class="col sm-3 d-grid">
-            <a class="btn btn-primary" href="{{route('agent.create')}}" >Ajouter un agent</a>
-            </div>
-            <div class="col sm-3 d-grid">
-                @if(auth()->user()->vision == 3)
-                <a class="btn btn-danger" href="{{route('site.index')}}" >Sites</a>
-                @endif
+            <a class="btn btn-primary" href="{{route('site.create')}}" >Ajouter un site</a>
             </div>
             <div class="col sm-3">
             </div>
+            <div class="col sm-3">
+                @if(auth()->user()->vision == 2)
+                <a class="btn btn-primary" href="{{route('site.index')}}" >Sites</a>
+                @endif
+            </div>
             <div class="col sm-3 d-grid">
-            <a class="btn btn-secondary" href="{{route('dashboard')}}" >Retour à l'acceuil</a>
+            <a class="btn btn-secondary" href="{{route('dashboard')}}" >Retour</a>
             </div>
         </div>
         <table class="table">
             <thead> 
                 <tr>
-                    <th>NumAgent</th>
-                    <th>Nom </th>
-                    <th>Prenom</th>
-                    <th>Site</th>
-                    <th>Date de création</th>
+                    <th> Nom du Site </th>
+                    <th> Date de création </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($agents as $agent)
-                @can('see-agent', $agent)
+                @foreach($sites as $site)
                 <tr>
-                    <td>{{$agent->numAgent}}</td>
-                    <td>{{$agent->nomAgent}}</td>
-                    <td>{{$agent->prenomAgent}}</td>
-                    <td>{{$agent->site->nomSite}}</td>
-                    <td>{{$agent->created_at}}</td>
+                    <td>{{$site->nomSite}}</td>
+                    <td>{{$site->created_at}}</td>
                     <td>
-                        <a href="{{route('agent.edit',['agent' => $agent ])}}" class='btn btn-primary'>Modifier</a>
-                        <form action="{{route('agent.destroy',['agent' => $agent ])}}" method="post" class="d-inline">
+                        <a href="{{route('site.edit',['site' => $site ])}}" class='btn btn-primary'>Modifier</a>
+                        <form action="{{route('site.destroy',['site' => $site ])}}" method="post" class="d-inline">
                             @csrf
                             @method("DELETE")
                             <button type="submit" class="btn btn-danger">Supprimer</button>
                         </form>
                     </td>
                 </tr>
-                @endcan
                 @endforeach
             </tbody>
         </table> 

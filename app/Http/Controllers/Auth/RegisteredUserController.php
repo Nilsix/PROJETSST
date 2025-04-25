@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Models\Site;
 
 class RegisteredUserController extends Controller
 {
@@ -19,7 +20,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $sites = Site::all();
+        return view('auth.register', compact('sites'));
     }
 
     /**
@@ -33,8 +35,8 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'vision' => ['required', 'integer', 'min:1', 'max:2'],
-            'site' => ['required', 'string', 'max:255'],
+            'vision' => ['required', 'integer', 'min:1', 'max:3'],
+            'site_id' => ['required', 'integer', 'exists:sites,id'],
         ]);
 
         $user = User::create([
@@ -42,13 +44,11 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'vision' => $request->vision,
-            'site' => $request->site,
+            'site_id' => $request->site_id,
         ]);
 
         event(new Registered($user));
-
         Auth::login($user);
-
         return redirect(route('dashboard', absolute: false));
     }
 }

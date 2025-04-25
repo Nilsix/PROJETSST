@@ -12,7 +12,8 @@ class SiteController extends Controller
      */
     public function index()
     {
-        //
+        $sites = Site::all();
+        return view('site.index', ["sites" => $sites]);
     }
 
     /**
@@ -20,7 +21,7 @@ class SiteController extends Controller
      */
     public function create()
     {
-        //
+        return view('site.create');
     }
 
     /**
@@ -28,7 +29,10 @@ class SiteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            "nomSite" => ['required',Rule::unique('sites','nomSite')]]);
+            Site::create($data);
+            return view('site.index', ["sites" => Site::all()])->with('success', 'Site créé avec succès');
     }
 
     /**
@@ -44,7 +48,7 @@ class SiteController extends Controller
      */
     public function edit(Site $site)
     {
-        //
+        return view('site.edit', ["site" => $site]);
     }
 
     /**
@@ -52,7 +56,10 @@ class SiteController extends Controller
      */
     public function update(Request $request, Site $site)
     {
-        //
+        $data = $request->validate([
+            "nomSite" => ['required',Rule::unique('sites','nomSite')]]);
+            $site->update($data);
+            return view('site.index', ["sites" => Site::all()])->with('success', 'Site modifié avec succès');
     }
 
     /**
@@ -60,6 +67,7 @@ class SiteController extends Controller
      */
     public function destroy(Site $site)
     {
-        //
+        $site->delete();
+        return view('site.index', ["sites" => Site::all()])->with('success', 'Site supprimé avec succès');
     }
 }

@@ -26,6 +26,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->vision == 2 || $user->site == $agent->site;
         });
 
+        Gate::define('see-site',function(User $user){
+            return $user->vision == 3;
+        });
     }
+
     
 }

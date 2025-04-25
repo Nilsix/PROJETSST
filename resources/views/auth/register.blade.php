@@ -14,14 +14,19 @@
             <select id='vision' name='vision'>
                 <option value='1'>Locale</option>
                 <option value='2'>Globale</option>
+                <option value='3'>Super Admin</option>
             </select>
             <x-input-error :messages="$errors->get('vision')" class="mt-2" />
         </div>
 
         <div class="mt-4">
-            <x-input-label for='site' :value="__('Site')" />
-            <x-text-input id='site' name='site' :value="old('site')" required autocomplete="site" />
-            <x-input-error :messages="$errors->get('site')" class="mt-2" />
+            <x-input-label for='site_id' :value="__('Site')" />
+            <select id='site_id' name='site_id'>
+                @foreach ($sites as $site)
+                    <option value='{{ $site->id }}'>{{ $site->nomSite }}</option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('site_id')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
