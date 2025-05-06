@@ -26,6 +26,16 @@
                 <input type="text" name="numAgent" class="form-control" placeholder="Numéro agent">
             </div>
         </div>
+
+        <div class="row mb-3">
+            <div class="offset-sm-3 col-sm-3 d-grid">
+                <button type="submit" class="btn btn-primary">Modifier</button>
+            </div>
+
+            <div class="col-sm-3 d-grid">
+                <a href="{{route('agent.index')}}" class="btn btn-secondary d-inline">Retour</a>
+            </div>
+        </div>
     </form>
 </div>
 </body>
