@@ -23,20 +23,25 @@
                 <a class="btn btn-danger" href="{{route('site.index')}}" >Sites</a>
                 @endif
             </div>
-            <div class="col sm-3">
+            <div class="col sm-3 d-grid">
+            <a class="btn btn-primary" href="{{route('user.index')}}">Utilisateurs</a>
+            </div>
+            <div class="col sm-3 d-grid">
+            <a class="btn btn-primary" href="{{route('agent.getInfos')}}">Infos</a>
             </div>
             <div class="col sm-3 d-grid">
             <a class="btn btn-secondary" href="{{route('dashboard')}}" >Retour à l'acceuil</a>
             </div>
         </div>
-        <table class="table">
-            <thead> 
+        <table class="table table-bordered table-hover">
+            <thead class="table-light"> 
                 <tr>
                     <th>NumAgent</th>
                     <th>Nom </th>
                     <th>Prenom</th>
                     <th>Site</th>
                     <th>Date de création</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>

@@ -8,7 +8,7 @@
 <body>
 <div class="container my-5">
     
-    <h1 class="text-primary">Créer un agent</h1>
+    <h1 class="text-primary">Ajouter un agent</h1>
     @if($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -24,45 +24,6 @@
             <label for="numAgent" class="col-sm-3 col-form-label text-end">Numéro agent</label>
             <div class="col-sm-6">
                 <input type="text" name="numAgent" class="form-control" placeholder="Numéro agent">
-            </div>
-        </div>
-
-        <div class="row mb-3 align-items-center">
-            <label for="nomAgent" class="col-sm-3 col-form-label text-end">Nom</label>
-            <div class="col-sm-6">
-                <input type="text" name="nomAgent" class="form-control" placeholder="Nom">
-            </div>
-        </div>
-        <div class="row mb-3 align-items-center">
-            <label for="prenomAgent" class="col-sm-3 col-form-label text-end">Prénom</label>
-            <div class="col-sm-6">
-                <input type="text" name="prenomAgent" class="form-control" placeholder="Prénom">
-            </div>
-        </div>
-        <?php
-        $user = auth()->user();
-        if($user->vision == 2){
-            echo "
-        <div class='row mb-3 align-items-center'>
-            <select name='site_id' class='form-control'>
-            <option value=''>Selectionner un site </option>
-            @foreach($sites as $site)
-            <option value='{{$site->id}}'> {{$site->nomSite}} </option>
-            @endforeach
-            </select>
-        </div>
-        ";}
-        else{
-            echo "
-            <input type='hidden' name='site' value='$user->site'>";
-        }
-        ?>
-        <div class="row mb-3">
-            <div class="offset-sm-3 col-sm-3 d-grid">
-                <button type="submit" class="btn btn-primary">Créer</button>
-            </div>
-            <div class="col-sm-3 d-grid">
-                <a href="{{route('agent.index')}}" class="btn btn-secondary d-inline">Retour</a>
             </div>
         </div>
     </form>

@@ -6,6 +6,7 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FileUpload;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,7 +18,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -25,10 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/agent/create', [AgentController::class, 'create'])->name('agent.create');
     Route::post('/agent', [AgentController::class, 'store'])->name('agent.store');
     Route::get('/agent/{agent}/edit', [AgentController::class, 'edit'])->name('agent.edit');
+    Route::get('/agent/infos', [AgentController::class, 'agentInfos'])->name('agent.getInfos');
+    Route::get('/agent/seeInfos', [AgentController::class, 'seeAgentInfos'])->name('agent.seeInfos');
     Route::put('/agent/{agent}/update', [AgentController::class, 'update'])->name('agent.update');
     Route::delete('/agent/{agent}/destroy',[AgentController::class, 'destroy'])->name('agent.destroy');
-    
-    Route::middleware("can:see-site")->resource('site', SiteController::class);
 });
 
 require __DIR__.'/auth.php';

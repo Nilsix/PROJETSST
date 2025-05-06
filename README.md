@@ -9,6 +9,33 @@
 
 ## About Laravel
 
+## Gestion des privilèges et logique métier
+
+
+### Structure des données principales
+- **Agent** : numAgent (unique), nom, prénom, site d'affectation
+- **Site** : liste des sites URSSAF
+- **User** : chaque utilisateur possède un niveau de vision/privilège
+
+### Privilèges et rôles
+- **vision = 1** : Utilisateur local (accès et gestion uniquement de son site)
+- **vision = 2** : Gestionnaire régional (accès à plusieurs sites)
+- **vision = 3** : Superadmin (accès global à tous les sites et toutes les fonctionnalités)
+
+### Fonctionnalités principales
+- CRUD agents (ajout, modification, suppression, consultation)
+- Interface secrétaires : gestion des agents selon droits
+- Interface gestionnaires : vision par site ou globale
+- Gestion sécurisée des accès via Laravel Gates, middleware et validation
+- Utilisation de MySQL pour la base de données
+
+### Sécurité
+- Toutes les routes sensibles sont protégées par le middleware `auth`
+- Les actions sensibles sont contrôlées par des Gates Laravel (`see-agent`, `see-site`)
+- Les droits d'accès sont vérifiés avant chaque opération critique
+
+---
+
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
 - [Simple, fast routing engine](https://laravel.com/docs/routing).
