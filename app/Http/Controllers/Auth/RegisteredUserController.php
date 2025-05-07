@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
-use App\Models\Site;
-
 class RegisteredUserController extends Controller
 {
     /**
@@ -20,8 +18,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        $sites = Site::all();
-        return view('auth.register', compact('sites'));
+        return view('auth.register');
     }
 
     /**
@@ -36,7 +33,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'vision' => ['required', 'integer', 'min:1', 'max:3'],
-            'site_id' => ['required', 'integer', 'exists:sites,id'],
+            'nomSite' => ['nullable', 'string', 'max:255'],
         ]);
 
         $user = User::create([
@@ -44,7 +41,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'vision' => $request->vision,
-            'site_id' => $request->site_id,
+            'nomSite' => $request->nomSite,
         ]);
 
         event(new Registered($user));

@@ -23,17 +23,17 @@
         <div class="row mb-3 align-items-center">
             <label for="numAgent" class="col-sm-3 col-form-label text-end">Numéro agent</label>
             <div class="col-sm-6">
-                <input type="text" name="numAgent" class="form-control" placeholder="Numéro agent">
+                <input type="text" name="numAgent" class="form-control" placeholder="UR11701281" required>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="offset-sm-3 col-sm-3 d-grid">
-                <button type="submit" class="btn btn-primary">Modifier</button>
+                <button type="submit" class="btn btn-primary">Ajouter</button>
             </div>
 
             <div class="col-sm-3 d-grid">
-                <a href="{{route('agent.index')}}" class="btn btn-secondary d-inline">Retour</a>
+                <a href="{{route('agent.index')}}" class="btn btn-secondary d-inline">Annuler</a>
             </div>
         </div>
     </form>

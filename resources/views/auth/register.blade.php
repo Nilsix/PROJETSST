@@ -20,13 +20,9 @@
         </div>
 
         <div class="mt-4">
-            <x-input-label for='site_id' :value="__('Site')" />
-            <select id='site_id' name='site_id'>
-                @foreach ($sites as $site)
-                    <option value='{{ $site->id }}'>{{ $site->nomSite }}</option>
-                @endforeach
-            </select>
-            <x-input-error :messages="$errors->get('site_id')" class="mt-2" />
+            <x-input-label for='nomSite' :value="__('Site')" />
+            <x-text-input id='nomSite' class='block mt-1 w-full' type='text' name='nomSite' :value="old('nomSite')" autocomplete='nomSite' />
+            <x-input-error :messages="$errors->get('nomSite')" class="mt-2" />
         </div>
 
         <!-- Email Address -->

@@ -24,6 +24,24 @@
         @csrf
         @method('PUT')
         <div class="row mb-3">
+            <label for="name" class="col-sm-3 col-form-label text-end">Nom</label>
+            <div class="col-sm-6">
+                <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="email" class="col-sm-3 col-form-label text-end">Email</label>
+            <div class="col-sm-6">
+                <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="password" class="col-sm-3 col-form-label text-end">Nouveau mot de passe</label>
+            <div class="col-sm-6">
+                <input type="password" name="password" class="form-control" placeholder="Laissez vide pour ne pas modifier">
+            </div>
+        </div>
+        <div class="row mb-3">
             <label for="vision" class="col-sm-3 col-form-label text-end">Vision</label>
             <div class="col-sm-6">
                 <select name="vision" class="form-control" required>
@@ -35,14 +53,9 @@
             </div>
         </div>
         <div class="row mb-3">
-            <label for="site_id" class="col-sm-3 col-form-label text-end">Site</label>
+            <label for="nomSite" class="col-sm-3 col-form-label text-end">Nom du site</label>
             <div class="col-sm-6">
-                <select name="site_id" class="form-control">
-                    <option value="">Aucun</option>
-                    @foreach($sites as $site)
-                        <option value="{{$site->id}}">{{$site->nomSite}}</option>
-                    @endforeach
-                </select>
+                <input type="text" name="nomSite" class="form-control" value="{{ old('nomSite', $user->nomSite) }}" placeholder="Nom du site">
             </div>
         </div>
         <div class="row mb-3">

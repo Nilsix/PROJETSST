@@ -19,9 +19,7 @@
             <a class="btn btn-primary" href="{{route('agent.create')}}" >Ajouter un agent</a>
             </div>
             <div class="col sm-3 d-grid">
-                @if(auth()->user()->vision == 3)
-                <a class="btn btn-danger" href="{{route('site.index')}}" >Sites</a>
-                @endif
+
             </div>
             <div class="col sm-3 d-grid">
             <a class="btn btn-primary" href="{{route('user.index')}}">Utilisateurs</a>
@@ -40,22 +38,20 @@
                     <th>Nom </th>
                     <th>Prenom</th>
                     <th>Site</th>
-                    <th>Date de création</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($agents as $agent)
-                @can('see-agent', $agent)
+                @foreach($agentsList as $agent)
+                @can('see-agent', $user, $agent['nomSite'])
                 <tr>
-                    <td>{{$agent->numAgent}}</td>
-                    <td>{{$agent->nomAgent}}</td>
-                    <td>{{$agent->prenomAgent}}</td>
-                    <td>{{$agent->site->nomSite}}</td>
-                    <td>{{$agent->created_at}}</td>
+                    <td>{{$agent['numAgent']}}</td>
+                    <td>{{$agent['nom']}}</td>
+                    <td>{{$agent['prenom']}}</td>
+                    <td>{{$agent['nomSite']}}</td>
                     <td>
-                        <a href="{{route('agent.edit',['agent' => $agent ])}}" class='btn btn-primary'>Modifier</a>
-                        <form action="{{route('agent.destroy',['agent' => $agent ])}}" method="post" class="d-inline">
+                        <a href="{{route('agent.edit', $agent['numAgent'])}}" class='btn btn-primary'>Modifier</a>
+                        <form action="{{route('agent.destroy', $agent['numAgent'])}}" method="post" class="d-inline">
                             @csrf
                             @method("DELETE")
                             <button type="submit" class="btn btn-danger">Supprimer</button>

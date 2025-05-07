@@ -21,7 +21,7 @@ class User extends Authenticatable
         'vision',
         'email',
         'password',
-        'site_id'
+        'nomSite'
     ];
 
     /**
@@ -45,8 +45,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-    public function site(){
-        return $this->belongsTo(Site::class);
     }
 }

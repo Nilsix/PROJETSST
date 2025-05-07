@@ -14,10 +14,7 @@ return new class extends Migration
         Schema::create('agents', function (Blueprint $table) {
             $table->id();
             $table->string('numAgent')->unique();
-            $table->string('nomAgent');
-            $table->string('prenomAgent');
             $table->timestamps();
-            $table->foreignId('site_id')->constrained()->cascadeOnDelete();
         });
     }
 

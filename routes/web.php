@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/agent/seeInfos', [AgentController::class, 'seeAgentInfos'])->name('agent.seeInfos');
     Route::put('/agent/{agent}/update', [AgentController::class, 'update'])->name('agent.update');
     Route::delete('/agent/{agent}/destroy',[AgentController::class, 'destroy'])->name('agent.destroy');
+    // Routes pour les utilisateurs
+    Route::resource('user', UserController::class);
 });
-
 require __DIR__.'/auth.php';

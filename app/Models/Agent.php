@@ -10,12 +10,11 @@ class Agent extends Model
     use HasFactory;
     protected $fillable = [
         'numAgent',
-        'nomAgent',
-        'prenomAgent',
-        'site_id',
+        'nomSite'
     ];
     
-    public function site(){
-        return $this->belongsTo(Site::class);
-    }
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 }

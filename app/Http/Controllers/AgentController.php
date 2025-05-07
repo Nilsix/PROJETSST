@@ -6,31 +6,86 @@ use App\Models\Agent;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Gate;
-use App\Models\Site;
 use Illuminate\Support\Facades\Http;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class AgentController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $agents = Agent::all();
-        return view('agent.index', ["agents" => $agents]);
-    }
-    public function create(){
-        $sites = Site::all();
+        $agentsList = [];
+
+        foreach($agents as $agent) {
+            $numAgent = $agent->numAgent;
+            $token = 'E3rsyX3gtpOb0EiUW5NuYSu55dAxDs8N';
+            
+            try {
+                $response = Http::withOptions([
+                    'verify' => false
+                ])->get('https://solo.urssaf.recouv/orchestra/api/', [
+                    'token' => $token,
+                    'type' => 'ldap',
+                    'agent' => $numAgent
+                ]);
+
+                
+                if ($response->successful() && !empty($response->json())) {
+                    $agentData = $response->json()[0];
+                    \Log::info('Agent data from API:', ['data' => $agentData]);
+                    $agentsList[] = [
+                        'numAgent' => $numAgent,
+                        'nomSite' => $agentData["sitename"] ?? null,
+                        'nom' => $agentData['nom'] ?? null,
+                        'prenom' => $agentData['prenom'] ?? null,
+                        'email' => $agentData['email'] ?? null,
+                        'fonction' => $agentData['fonction'] ?? null
+                    ];                    
+                } else {
+                    $agentsList[] = [
+                        'numAgent' => $numAgent,
+                        'nomSite' => $agent->nomSite,
+                        'nom' => null,
+                        'prenom' => null,
+                        'email' => null,
+                        'fonction' => null
+                    ];
+                }
+            } catch (Exception $e) {
+                // En cas d'erreur, on conserve les données de base
+                $agentsList[] = [
+                    'numAgent' => $numAgent,
+                    'nomSite' => $agent->nomSite,
+                    'nom' => null,
+                    'prenom' => null,
+                    'email' => null,
+                    'fonction' => null
+                ];
+            }
+        }
+
+        // Debug: Vérifier la structure des données
+        \Log::info('Agents list:', ['agents' => $agentsList]);
+        
         $user = auth()->user();
-        return view('agent.create', ["sites" => $sites, "user" => $user] );
+        return view('agent.index', compact('agentsList', 'user'));
     }
 
-    public function store(Request $request){
+    public function create(){
+        $user = auth()->user();
+        return view('agent.create', ["user" => $user]);
+    }
+
+    public function store(Request $request)
+    {
         $data = $request->validate([
             "numAgent" => "required|unique:agents,numAgent",
         ], [
-            "numAgent.required" => "Le numéro de l'agent est requis"]);
-       
-            $numAgent = $request->input('numAgent');
-            $token = 'E3rsyX3gtpOb0EiUW5NuYSu55dAxDs8N';
-            $numAgent = $request->input('numAgent');
+            "numAgent.required" => "Le numéro de l'agent est requis"
+        ]);
+
+        $numAgent = $request->input('numAgent');
         $token = 'E3rsyX3gtpOb0EiUW5NuYSu55dAxDs8N';
         
         try {
@@ -42,22 +97,19 @@ class AgentController extends Controller
                 'agent' => $numAgent
             ]);
 
-            if($response->successful() && !empty($response->json())) {
+            if ($response->successful() && !empty($response->json())) {
                 $agent = $response->json()[0];
                 Agent::create([
-                    "numAgent" => $numAgent,
-                    "nomAgent" => $agent['nom'],
-                    "prenomAgent" => $agent['prenom'],
-                    ""
+                    "numAgent" => $numAgent
                 ]);
-                return view('agent.seeInfos', compact('agent'));
+                return redirect()->route('agent.index')->with('success', 'Agent ajouté avec succès');
             }
             
             return back()->with('error', 'Aucune donnée trouvée pour cet agent');
         } catch (Exception $e) {
-            return back()->with('error', 'Erreur lors de la récupération des informations : ' . $e->getMessage());
+            return back()->with('error', 'Erreur lors de la récupération des données de l\'agent');
         }
-     }
+    }
 
     public function edit(Agent $agent){
         if(Gate::denies('see-agent',$agent)){
@@ -92,4 +144,5 @@ class AgentController extends Controller
         }
         $agent->delete();
         return redirect()->route('agent.index')->with('success','Agent supprimé avec succes');
+    }
 }

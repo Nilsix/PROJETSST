@@ -18,9 +18,7 @@
         <div class="col-sm-3 d-grid">
             <a href="{{ route('agent.index') }}" class="btn btn-primary">Voir les agents</a>
         </div>
-        <div class="col-sm-3 d-grid">
-            <a href="{{ route('site.index') }}" class="btn btn-secondary">Voir les sites</a>
-        </div>
+
         <div class="col-sm-3 d-grid">
             <a class="btn btn-secondary" href="{{ route('dashboard') }}">Retour à l'accueil</a>
         </div>
@@ -31,7 +29,7 @@
                 <th>Nom</th>
                 <th>Email</th>
                 <th>Vision</th>
-                <th>Site</th>
+                <th>Nom du site</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -41,7 +39,7 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->vision }}</td>
-                    <td>{{ $user->site ? $user->site->site : '-' }}</td>
+                    <td>{{ $user->nomSite }}</td>
                     <td>
                         <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary btn-sm">Modifier</a>
                         <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display:inline-block;">

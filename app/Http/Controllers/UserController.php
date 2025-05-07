@@ -11,14 +11,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = \App\Models\User::with('site')->get();
+        $users = \App\Models\User::all();
         return view('user.index', compact('users'));
     }
 
     public function create()
     {
-        $sites = \App\Models\Site::all();
-        return view('user.create', compact('sites'));
+        return view('user.create');
     }
 
     public function store(Request $request)
@@ -28,18 +27,17 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
             'vision' => 'required|integer|min:1|max:3',
-            'site_id' => 'nullable|exists:sites,id',
+            'nomSite' => 'nullable|string|max:255',
         ]);
         $validated['password'] = bcrypt($validated['password']);
         \App\Models\User::create($validated);
         return redirect()->route('user.index')->with('success', 'Utilisateur créé avec succès');
-    }
+     }
 
     public function edit($id)
     {
         $user = \App\Models\User::findOrFail($id);
-        $sites = \App\Models\Site::all();
-        return view('user.edit', compact('user', 'sites'));
+        return view('user.edit', compact('user'));
     }
 
     public function update(Request $request, $id)
@@ -50,15 +48,18 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:6',
             'vision' => 'required|integer|min:1|max:3',
-            'site_id' => 'nullable|exists:sites,id',
+            'nomSite' => 'nullable|string|max:255',
         ]);
-        if (!empty($validated['password'])) {
+        
+        // Seulement si un nouveau mot de passe est fourni
+        if ($request->filled('password')) {
             $validated['password'] = bcrypt($validated['password']);
         } else {
             unset($validated['password']);
         }
+        
         $user->update($validated);
-        return redirect()->route('user.index')->with('success', 'Utilisateur modifié avec succès');
+        return redirect()->route('user.index')->with('success', 'Utilisateur mis à jour avec succès');
     }
 
     public function destroy($id)
@@ -67,4 +68,5 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('user.index')->with('success', 'Utilisateur supprimé avec succès');
     }
+    
 }

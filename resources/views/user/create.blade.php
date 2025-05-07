@@ -53,12 +53,7 @@
         <div class="row mb-3">
             <label for="site_id" class="col-sm-3 col-form-label text-end">Site</label>
             <div class="col-sm-6">
-                <select name="site_id" class="form-control">
-                    <option value="">Aucun</option>
-                    @foreach($sites as $site)
-                        <option value="{{ $site->id }}" {{ old('site_id') == $site->id ? 'selected' : '' }}>{{ $site->site }}</option>
-                    @endforeach
-                </select>
+                <input type="text" name="nomSite" class="form-control" value="{{ old('nomSite') }}" placeholder="Nom du site">
             </div>
         </div>
         <div class="row mb-3">

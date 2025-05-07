@@ -13,6 +13,8 @@ class AgentSeeder extends Seeder
      */
     public function run(): void
     {
-        Agent::factory()->count(50)->create(); 
+        // Créer 10 agents valides depuis l'API
+        $factory = new \Database\Factories\AgentFactory();
+        $agents = $factory->createValidAgents(10);
     }
 }
