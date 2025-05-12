@@ -9,6 +9,20 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    public function getAuthIdentifierName()
+    {
+        return 'numAgent';
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->numAgent;
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
     /**
@@ -17,10 +31,9 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
         'vision',
-        'email',
         'password',
+        'numAgent',
         'nomSite'
     ];
 

@@ -23,7 +23,7 @@
         <div class="row mb-3 align-items-center">
             <label for="numAgent" class="col-sm-3 col-form-label text-end">Numéro agent</label>
             <div class="col-sm-6">
-                <input type="text" name="numAgent" class="form-control" placeholder="UR11701281" required>
+                <input type="text" name="numAgent" class="form-control" required>
             </div>
         </div>
 
