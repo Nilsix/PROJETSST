@@ -20,9 +20,15 @@
         </div>
 
         <div class="mt-4">
-            <x-input-label for='nomSite' :value="__('Site')" />
-            <x-text-input id='nomSite' class='block mt-1 w-full' type='text' name='nomSite' :value="old('nomSite')" autocomplete='nomSite' />
-            <x-input-error :messages="$errors->get('nomSite')" class="mt-2" />
+            <x-input-label for='sitename' :value="__('Site')" />
+            <x-text-input id='sitename' class='block mt-1 w-full' type='text' name='sitename' :value="old('sitename')" autocomplete='sitename' />
+            <x-input-error :messages="$errors->get('sitename')" class="mt-2" />
+        </div>
+
+        <div class="mt-4">
+            <x-input-label for='numAgent' :value="__('Numéro agent')" />
+            <x-text-input id='numAgent' class='block mt-1 w-full' type='text' name='numAgent' :value="old('numAgent')" required autocomplete='numAgent' />
+            <x-input-error :messages="$errors->get('numAgent')" class="mt-2" />
         </div>
 
         <!-- Email Address -->

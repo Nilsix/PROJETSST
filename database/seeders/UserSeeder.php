@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 
 class UserSeeder extends Seeder
 {
@@ -13,6 +13,9 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->count(30)->create();
+        // Créer 10 utilisateurs avec des numAgents valides
+        User::factory()
+            ->count(10)
+            ->create();
     }
 }

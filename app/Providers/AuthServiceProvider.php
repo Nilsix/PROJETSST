@@ -6,6 +6,7 @@ use App\Models\Agent;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -23,8 +24,8 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Keep the existing gate for backward compatibility
-        Gate::define('see-agent',function(User $user,$site){
-            return $user->vision >= 2 || $user->site == $site;
+        Gate::define('see-agent',function(User $user, $agent){
+            return $user->vision >= 2 || $user->sitename == $agent['sitename'];
         });
 
         Gate::define('see-site',function(User $user){

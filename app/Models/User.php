@@ -9,54 +9,47 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    public function getAuthIdentifierName()
-    {
-        return 'numAgent';
-    }
-
-    public function getAuthIdentifier()
-    {
-        return $this->numAgent;
-    }
-
-    public function getAuthPassword()
-    {
-        return $this->password;
-    }
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array
      */
     protected $fillable = [
-        'vision',
+        'name',
+        'email',
         'password',
-        'numAgent',
-        'nomSite'
+        'vision',
+        'numAgent'
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
+     * @var array
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token'
     ];
 
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string, string>
+     * @return array
      */
-    protected function casts(): array
+    protected $casts = [
+        'password' => 'hashed'
+    ];
+
+    /**
+     * Find the user instance for the given username.
+     *
+     * @param  string  $username
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
+    public function findForPassport($username)
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->where('email', $username)->first();
     }
 }

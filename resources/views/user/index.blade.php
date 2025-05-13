@@ -29,7 +29,8 @@
                 <th>Nom</th>
                 <th>Email</th>
                 <th>Vision</th>
-                <th>Nom du site</th>
+                <th>Site</th>
+                <th>Certification</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -39,7 +40,8 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->vision }}</td>
-                    <td>{{ $user->nomSite }}</td>
+                    <td>{{ $user->sitename }}</td>
+                    <td>{{ $user->certification ? 'Oui' : 'Non' }}</td>
                     <td>
                         <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary btn-sm">Modifier</a>
                         <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display:inline-block;">

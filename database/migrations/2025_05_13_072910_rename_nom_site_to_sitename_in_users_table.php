@@ -6,21 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('numAgent')->unique();
-            $table->dropColumn('nomSite');
+            $table->renameColumn('nomSite', 'sitename');
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('nom');
-            $table->string('prenom');
-            $table->unsignedBigInteger('site_id');
-            $table->dropColumn('numAgent');
+            $table->renameColumn('sitename', 'nomSite');
         });
     }
 };

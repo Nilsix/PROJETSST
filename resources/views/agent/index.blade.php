@@ -19,13 +19,7 @@
             <a class="btn btn-primary" href="{{route('agent.create')}}" >Ajouter un agent</a>
             </div>
             <div class="col sm-3 d-grid">
-
-            </div>
-            <div class="col sm-3 d-grid">
             <a class="btn btn-primary" href="{{route('user.index')}}">Utilisateurs</a>
-            </div>
-            <div class="col sm-3 d-grid">
-            <a class="btn btn-primary" href="{{route('agent.getInfos')}}">Infos</a>
             </div>
             <div class="col sm-3 d-grid">
             <a class="btn btn-secondary" href="{{route('dashboard')}}" >Retour à l'acceuil</a>
@@ -38,17 +32,21 @@
                     <th>Nom </th>
                     <th>Prenom</th>
                     <th>Site</th>
+                    <th>Certification</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($agentsList as $agent)
-                @can('see-agent', $user, $agent['nomSite'])
+                @can('see-agent', $user, $agent)
                 <tr>
                     <td>{{$agent['numAgent']}}</td>
                     <td>{{$agent['nom']}}</td>
                     <td>{{$agent['prenom']}}</td>
-                    <td>{{$agent['nomSite']}}</td>
+                    <td>{{$agent['sitename']}}</td>
+                    <td>
+                        {{ $agent['certification'] ? 'Oui' : 'Non' }}
+                    </td>
                     <td>
                         <a href="{{route('agent.edit', $agent['numAgent'])}}" class='btn btn-primary'>Modifier</a>
                         <form action="{{route('agent.destroy', $agent['numAgent'])}}" method="post" class="d-inline">

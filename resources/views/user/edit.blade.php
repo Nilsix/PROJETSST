@@ -53,9 +53,16 @@
             </div>
         </div>
         <div class="row mb-3">
-            <label for="nomSite" class="col-sm-3 col-form-label text-end">Nom du site</label>
+            <label for="sitename" class="col-sm-3 col-form-label text-end">Site</label>
             <div class="col-sm-6">
-                <input type="text" name="nomSite" class="form-control" value="{{ old('nomSite', $user->nomSite) }}" placeholder="Nom du site">
+                <select name="sitename" class="form-control" required>
+                    <option value="">Sélectionner</option>
+                    @foreach($agentsList as $agent)
+                        <option value="{{ $agent['nomSite'] }}" {{ old('sitename', $user->sitename) == $agent['nomSite'] ? 'selected' : '' }}>
+                            {{ $agent['nomSite'] }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
         </div>
         <div class="row mb-3">

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
@@ -18,38 +19,29 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         $request->validate([
-            'numAgent' => 'required',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        $token = 'E3rsyX3gtpOb0EiUW5NuYSu55dAxDs8N';
-        $numAgent = $request->input('numAgent');
+        $email = $request->input('email');
 
-        try {
-            $response = Http::withOptions([
-                'verify' => false
-            ])->get('https://solo.urssaf.recouv/orchestra/api/', [
-                'token' => $token,
-                'type' => 'ldap',
-                'agent' => $numAgent
-            ]);
+        // Vérifier si l'utilisateur existe déjà
+        $user = User::where('email', $email)->first();
 
-            if ($response->successful() && !empty($response->json())) {
-                $agentData = $response->json()[0];
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'Cet email n\'est pas enregistré.',
+            ])->onlyInput('email');
+        }
 
-                // Vérifier si l'utilisateur existe déjà
-                $user = User::where('numAgent', $numAgent)->first();
+        // Vérifier le mot de passe
+        if (!Hash::check($request->password, $user->password)) {
+            return back()->withErrors([
+                'email' => 'Le mot de passe est incorrect.',
+            ])->onlyInput('email');
+        }
 
-                if (!$user) {
-                    // Créer un nouvel utilisateur
-                    $user = User::create([
-                        'numAgent' => $numAgent,
-                        'password' => bcrypt($request->password),
-                        'nomSite' => $agentData['sitename'] ?? null
-                    ]);
-                }
-
-                if (Auth::attempt(['numAgent' => $numAgent, 'password' => $request->password])) {
+                if (Auth::attempt(['email' => $email, 'password' => $request->password])) {
                     $request->session()->regenerate();
                     return redirect()->intended('dashboard');
                 }

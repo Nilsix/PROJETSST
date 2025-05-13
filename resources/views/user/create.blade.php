@@ -22,17 +22,12 @@
     <form method="post" action="{{ route('user.store') }}">
         @csrf
         <div class="row mb-3">
-            <label for="name" class="col-sm-3 col-form-label text-end">Nom</label>
+            <label for="numAgent" class="col-sm-3 col-form-label text-end">Numéro agent</label>
             <div class="col-sm-6">
-                <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
+                <input type="text" name="numAgent" class="form-control" value="{{ old('numAgent') }}" required>
             </div>
         </div>
-        <div class="row mb-3">
-            <label for="email" class="col-sm-3 col-form-label text-end">Email</label>
-            <div class="col-sm-6">
-                <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
-            </div>
-        </div>
+        
         <div class="row mb-3">
             <label for="password" class="col-sm-3 col-form-label text-end">Mot de passe</label>
             <div class="col-sm-6">
@@ -44,16 +39,10 @@
             <div class="col-sm-6">
                 <select name="vision" class="form-control" required>
                     <option value="">Sélectionner</option>
-                    <option value="1" {{ old('vision') == 1 ? 'selected' : '' }}>Superadmin</option>
-                    <option value="2" {{ old('vision') == 2 ? 'selected' : '' }}>Admin</option>
-                    <option value="3" {{ old('vision') == 3 ? 'selected' : '' }}>Utilisateur</option>
+                    <option value="1" {{ old('vision') == 1 ? 'selected' : '' }}>Local</option>
+                    <option value="2" {{ old('vision') == 2 ? 'selected' : '' }}>Global</option>
+                    <option value="3" {{ old('vision') == 3 ? 'selected' : '' }}>Super admin</option>
                 </select>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="site_id" class="col-sm-3 col-form-label text-end">Site</label>
-            <div class="col-sm-6">
-                <input type="text" name="nomSite" class="form-control" value="{{ old('nomSite') }}" placeholder="Nom du site">
             </div>
         </div>
         <div class="row mb-3">

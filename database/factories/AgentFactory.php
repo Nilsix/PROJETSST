@@ -15,8 +15,9 @@ class AgentFactory extends Factory
     
     private AgentApiService $agentApiService;
 
-    public function __construct()
+    public function __construct(...$args)
     {
+        parent::__construct(...$args); // Ne JAMAIS oublier ça en factory custom
         $this->agentApiService = new AgentApiService();
     }
 
@@ -25,27 +26,15 @@ class AgentFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    public function definition()
     {
         return [
-            'numAgent' => $this->faker->unique()->bothify('UR???????'),
+            'numAgent' => $this->faker->unique()->regexify('UR[0-9]{8}')
         ];
     }
 
-    /**
-     * Crée un nombre spécifié d'agents valides depuis l'API
-     *
-     * @param int $count Nombre d'agents à créer
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function createValidAgents(int $count = 10)
+    public function state($state)
     {
-        $validAgents = $this->agentApiService->getValidAgents($count);
-        
-        return collect($validAgents)->map(function ($agent) {
-            return Agent::create([
-                'numAgent' => $agent['numAgent']
-            ]);
-        });
+        return parent::state($state);
     }
 }

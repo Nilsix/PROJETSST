@@ -20,7 +20,6 @@ class AgentController extends Controller
         foreach ($agents as $agent) {
             $numAgent = $agent->numAgent;
             $token = 'E3rsyX3gtpOb0EiUW5NuYSu55dAxDs8N';
-
             try {
                 $response = Http::withOptions([
                     'verify' => false
@@ -35,31 +34,34 @@ class AgentController extends Controller
                     \Log::info('Agent data from API:', ['data' => $agentData]);
                     $agentsList[] = [
                         'numAgent' => $numAgent,
-                        'nomSite' => $agentData["sitename"] ?? null,
+                        'sitename' => $agentData["sitename"] ?? null,
                         'nom' => $agentData['nom'] ?? null,
                         'prenom' => $agentData['prenom'] ?? null,
                         'email' => $agentData['email'] ?? null,
-                        'fonction' => $agentData['fonction'] ?? null
+                        'fonction' => $agentData['fonction'] ?? null,
+                        'certification' => $agent->certification
                     ];
                 } else {
                     $agentsList[] = [
                         'numAgent' => $numAgent,
-                        'nomSite' => $agent->nomSite,
+                        'sitename' => $agent->sitename,
                         'nom' => null,
                         'prenom' => null,
                         'email' => null,
-                        'fonction' => null
+                        'fonction' => null,
+                        'certification' => $agent->certification
                     ];
                 }
             } catch (Exception $e) {
                 // En cas d'erreur, on conserve les données de base
                 $agentsList[] = [
                     'numAgent' => $numAgent,
-                    'nomSite' => $agent->nomSite,
+                    'sitename' => $agent->sitename,
                     'nom' => null,
                     'prenom' => null,
                     'email' => null,
-                    'fonction' => null
+                    'fonction' => null,
+                    'certification' => $agent->certification
                 ];
             }
         }
@@ -98,17 +100,29 @@ class AgentController extends Controller
                 'agent' => $numAgent
             ]);
 
-            if ($response->successful() && !empty($response->json())) {
-                $agent = $response->json()[0];
-                Agent::create([
-                    "numAgent" => $numAgent
-                ]);
-                return redirect()->route('agent.index')->with('success', 'Agent ajouté avec succès');
+            if (!$response->successful()) {
+                throw new \Exception('Erreur lors de la communication avec l\'API: ' . $response->status());
             }
 
-            return back()->with('error', 'Le numéro d\'agent n\'est pas valide ou ne correspond à aucun agent existant');
-        } catch (Exception $e) {
-            return back()->with('error', 'Erreur lors de la récupération des données de l\'agent');
+            $agentData = $response->json();
+            if (empty($agentData)) {
+                throw new \Exception('Agent non trouvé dans l\'API');
+            }
+
+            // Vérifier si l'agent existe déjà dans la base de données
+            $existingAgent = Agent::where('numAgent', $numAgent)->first();
+            if ($existingAgent) {
+                throw new \Exception('Cet agent existe déjà dans la base de données');
+            }
+
+            $agent = $response->json()[0];
+            Agent::create([
+                "numAgent" => $numAgent,
+                "certification" => false // Par défaut, non certifié
+            ]);
+            return redirect()->route('agent.index')->with('success', 'Agent ajouté avec succès');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
     }
 
@@ -128,18 +142,10 @@ class AgentController extends Controller
         $data = $request->validate([
             "numAgent" => ["required", Rule::unique('agents', 'numAgent')->ignore($agent->id), "size:10"],
             "nomAgent" => "required",
-            "prenomAgent" => "required",
-            "site_id" => "required"
-        ], [
-            "numAgent.required" => "Le numéro de l'agent est requis",
-            "numAgent.unique" => "Le numéro de l'agent doit être unique",
-            "numAgent.size" => "Le numéro de l'agent doit contenir exactement 10 caractères",
-            "nomAgent.required" => "Le nom de l'agent est requis",
-            "prenomAgent.required" => "Le prénom de l'agent est requis",
-            "site_id.required" => "Le site de l'agent est requis"
         ]);
+
         $agent->update($data);
-        return redirect()->route('agent.index')->with('success', 'Agent modifié avec succès');
+        return redirect()->route('agent.index')->with('success', 'Agent mis à jour avec succès');
     }
 
     public function destroy(Agent $agent)

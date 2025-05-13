@@ -52,6 +52,15 @@
         }
         ?>
         <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Certification</label>
+            <div class="col-sm-6">
+                <select name="certification" class="form-control">
+                    <option value="0" {{ $agent->certification == 0 ? 'selected' : '' }}>Non</option>
+                    <option value="1" {{ $agent->certification == 1 ? 'selected' : '' }}>Oui</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
             <div class="offset-sm-3 col-sm-3 d-grid">
                 <button type="submit" class="btn btn-primary">Modifier</button>
             </div>

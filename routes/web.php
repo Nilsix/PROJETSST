@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('user', UserController::class);
 });
 // Auth routes
-Route::get('/login', [AuthController::class, 'login'])->name('login');
+/*Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+*/
+require __DIR__.'/auth.php';
