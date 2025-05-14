@@ -13,9 +13,28 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Créer 10 utilisateurs avec des numAgents valides
-        User::factory()
-            ->count(10)
-            ->create();
+        User::create([
+            "name" => "NilsAdmin",
+            "email" => "na@na",
+            "password" => bcrypt("testtest"),
+            "vision" => 3,
+            "numAgent" => "UR11720205"
+        ]);
+        User::create([
+            "name" => "NilsGlobal",
+            "email" => "ng@ng",
+            "password" => bcrypt("testtest"),
+            "vision" => 2,
+            "numAgent" => "UR11717065"
+        ]);
+        User::create([
+            "name" => "NilsLocale",
+            "email" => "nl@nl",
+            "password" => bcrypt("testtest"),
+            "vision" => 1,
+            "numAgent" => "UR11721356"
+        ]);
+
+        
     }
 }

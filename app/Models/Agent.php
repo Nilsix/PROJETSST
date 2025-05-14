@@ -14,4 +14,8 @@ class Agent extends Model
         'numAgent',
         'certification'
     ];
+
+    protected $casts = [
+        'certification' => 'integer'
+    ];
 }

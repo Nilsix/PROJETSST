@@ -43,16 +43,23 @@
                     <td>{{$agent['numAgent']}}</td>
                     <td>{{$agent['nom']}}</td>
                     <td>{{$agent['prenom']}}</td>
-                    <td>{{$agent['sitename']}}</td>
+                    <td>{{$agent['sitename']}}</td>  
                     <td>
-                        {{ $agent['certification'] ? 'Oui' : 'Non' }}
+                        @if($agent['certification'] == 1)
+                            Oui
+                        @elseif($agent['certification'] == 2)
+                            Non
+                        @elseif($agent['certification'] == 3)
+                            Vide
+                        @endif
                     </td>
+                    
                     <td>
-                        <a href="{{route('agent.edit', $agent['numAgent'])}}" class='btn btn-primary'>Modifier</a>
-                        <form action="{{route('agent.destroy', $agent['numAgent'])}}" method="post" class="d-inline">
+                        <a href="{{route('agent.edit', $agent['id'])}}" class='btn btn-primary'>Modifier</a>
+                        <form action="{{ route('agent.destroy', $agent['id']) }}" method="POST" class="d-inline">
                             @csrf
-                            @method("DELETE")
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet agent ?')">Supprimer</button>
                         </form>
                     </td>
                 </tr>

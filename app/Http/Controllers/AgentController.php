@@ -39,7 +39,8 @@ class AgentController extends Controller
                         'prenom' => $agentData['prenom'] ?? null,
                         'email' => $agentData['email'] ?? null,
                         'fonction' => $agentData['fonction'] ?? null,
-                        'certification' => $agent->certification
+                        'certification' => $agent->certification,
+                        'id' => $agent->id
                     ];
                 } else {
                     $agentsList[] = [
@@ -49,7 +50,8 @@ class AgentController extends Controller
                         'prenom' => null,
                         'email' => null,
                         'fonction' => null,
-                        'certification' => $agent->certification
+                        'certification' => $agent->certification,
+                        'id' => $agent->id
                     ];
                 }
             } catch (Exception $e) {
@@ -61,7 +63,8 @@ class AgentController extends Controller
                     'prenom' => null,
                     'email' => null,
                     'fonction' => null,
-                    'certification' => $agent->certification
+                    'certification' => $agent->certification,
+                    'id' => $agent->id
                 ];
             }
         }
@@ -83,6 +86,7 @@ class AgentController extends Controller
     {
         $data = $request->validate([
             "numAgent" => "required|unique:agents,numAgent|size:10",
+            "certification" => "integer",
         ], [
             "numAgent.required" => "Le numéro de l'agent est requis",
             "numAgent.size" => "Le numéro de l'agent doit contenir exactement 10 caractères"
@@ -118,7 +122,7 @@ class AgentController extends Controller
             $agent = $response->json()[0];
             Agent::create([
                 "numAgent" => $numAgent,
-                "certification" => false // Par défaut, non certifié
+                "certification" => $data["certification"]
             ]);
             return redirect()->route('agent.index')->with('success', 'Agent ajouté avec succès');
         } catch (\Exception $e) {
@@ -126,16 +130,18 @@ class AgentController extends Controller
         }
     }
 
-    public function edit(Agent $agent)
+    public function edit($id)
     {
+        $agent = Agent::findOrFail($id);
         if (Gate::denies('see-agent', $agent)) {
             abort(403, "Tu n'as pas l'autorisation d'accéder sur cette page");
         }
         return view('agent.edit', ["agent" => $agent]);
     }
 
-    public function update(Agent $agent, Request $request)
+    public function update($id, Request $request)
     {
+        $agent = Agent::findOrFail($id);
         if (Gate::denies('see-agent', $agent)) {
             abort(403, "Tu n'as pas l'autorisation d'accéder sur cette page");
         }

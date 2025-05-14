@@ -40,7 +40,7 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->vision }}</td>
-                    <td>{{ $user->sitename }}</td>
+
                     <td>{{ $user->certification ? 'Oui' : 'Non' }}</td>
                     <td>
                         <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary btn-sm">Modifier</a>

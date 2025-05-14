@@ -40,7 +40,7 @@ class UserController extends Controller
                     \Log::info('Agent data from API:', ['data' => $agentData]);
                     $agentsList[] = [
                         'numAgent' => $numAgent,
-                        'sitename' => $agentData["sitename"] ?? null,
+
                         'nom' => $agentData['nom'] ?? null,
                         'prenom' => $agentData['prenom'] ?? null,
                         'email' => $agentData['email'] ?? null,
@@ -49,7 +49,7 @@ class UserController extends Controller
                 } else {
                     $agentsList[] = [
                         'numAgent' => $numAgent,
-                        'sitename' => $agent->nomSite,
+
                         'nom' => null,
                         'prenom' => null,
                         'email' => null,

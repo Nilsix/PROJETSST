@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('agents', function (Blueprint $table) {
-            $table->boolean('certification')->nullable();
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('sitename');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('agents', function (Blueprint $table) {
-            $table->dropColumn('certification');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('sitename');
         });
     }
 };

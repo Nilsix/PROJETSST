@@ -53,18 +53,16 @@
             </div>
         </div>
         <div class="row mb-3">
-            <label for="sitename" class="col-sm-3 col-form-label text-end">Site</label>
-            <div class="col-sm-6">
-                <select name="sitename" class="form-control" required>
-                    <option value="">Sélectionner</option>
-                    @foreach($agentsList as $agent)
-                        <option value="{{ $agent['nomSite'] }}" {{ old('sitename', $user->sitename) == $agent['nomSite'] ? 'selected' : '' }}>
-                            {{ $agent['nomSite'] }}
-                        </option>
-                    @endforeach
-                </select>
+        <div class="row mb-3">
+            <div class="offset-sm-3 col-sm-6">
+                <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                <a href="{{ route('user.index') }}" class="btn btn-secondary">Retour</a>
             </div>
         </div>
+    </form>
+</div>
+
+
         <div class="row mb-3">
             <div class="offset-sm-3 col-sm-6">
                 <button type="submit" class="btn btn-primary">Mettre à jour</button>

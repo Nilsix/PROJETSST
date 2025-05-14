@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         // Keep the existing gate for backward compatibility
         Gate::define('see-agent',function(User $user, $agent){
-            return $user->vision >= 2 || $user->sitename == $agent['sitename'];
+            return $user->vision >= 2;
         });
 
         Gate::define('see-site',function(User $user){

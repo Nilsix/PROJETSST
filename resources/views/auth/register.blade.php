@@ -20,9 +20,7 @@
         </div>
 
         <div class="mt-4">
-            <x-input-label for='sitename' :value="__('Site')" />
-            <x-text-input id='sitename' class='block mt-1 w-full' type='text' name='sitename' :value="old('sitename')" autocomplete='sitename' />
-            <x-input-error :messages="$errors->get('sitename')" class="mt-2" />
+
         </div>
 
         <div class="mt-4">

@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('agents', function (Blueprint $table) {
-            $table->boolean('certification')->nullable();
+            $table->dropColumn('certification');
+            $table->integer('certification')->default(3)->comment('1: Oui, 2: Non, 3: Vide');
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('agents', function (Blueprint $table) {
             $table->dropColumn('certification');
+            $table->boolean('certification')->default(false);
         });
     }
 };
