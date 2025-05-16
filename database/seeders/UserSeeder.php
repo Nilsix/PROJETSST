@@ -20,20 +20,7 @@ class UserSeeder extends Seeder
             "vision" => 3,
             "numAgent" => "UR11720205"
         ]);
-        User::create([
-            "name" => "NilsGlobal",
-            "email" => "ng@ng",
-            "password" => bcrypt("testtest"),
-            "vision" => 2,
-            "numAgent" => "UR11717065"
-        ]);
-        User::create([
-            "name" => "NilsLocale",
-            "email" => "nl@nl",
-            "password" => bcrypt("testtest"),
-            "vision" => 1,
-            "numAgent" => "UR11721356"
-        ]);
+        
 
         
     }

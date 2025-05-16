@@ -38,7 +38,7 @@
             </thead>
             <tbody>
                 @foreach($agentsList as $agent)
-                @can('see-agent', $user, $agent)
+                @can('see-agent', $user, $agent,"")
                 <tr>
                     <td>{{$agent['numAgent']}}</td>
                     <td>{{$agent['nom']}}</td>

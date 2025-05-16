@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Agent;
 use Illuminate\Support\Facades\Http;
+use App\Models\User;
+
 class UserController extends Controller
 {
 
@@ -91,11 +93,13 @@ class UserController extends Controller
         if ($response->successful() && !empty($response->json())) {
             $agentData = $response->json()[0];
             $validated['password'] = bcrypt($validated['password']);
-            $validated['nom'] = $agentData['nom'].' '.$agentData['prenom'];
+            $validated['name'] = $agentData['nom'].' '.$agentData['prenom'];
+            $validated['email'] = $agentData['email'];
+            User::create($validated);
         } else {
             return redirect()->route('user.index')->with('error', 'Utilisateur non trouvé');
         }
-        User::create($validated);
+        
         return redirect()->route('user.index')->with('success', 'Utilisateur créé avec succès');
      }
 

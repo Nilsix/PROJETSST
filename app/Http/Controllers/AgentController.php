@@ -16,10 +16,23 @@ class AgentController extends Controller
     {
         $agents = Agent::all();
         $agentsList = [];
+        $user = auth()->user();
+        $token = 'E3rsyX3gtpOb0EiUW5NuYSu55dAxDs8N';
 
+        /*try{
+            $response = Http::withOptions([
+                'verify' => false ])->get('https://solo/urssaf/orchestra/api/', [
+                    'token' => $token,
+                    'type' => 'ldap',
+                    'agent' => $user->numAgent
+                ]);
+            
+        }catch(Exception $e){
+            
+        }*/
         foreach ($agents as $agent) {
             $numAgent = $agent->numAgent;
-            $token = 'E3rsyX3gtpOb0EiUW5NuYSu55dAxDs8N';
+           
             try {
                 $response = Http::withOptions([
                     'verify' => false
@@ -146,8 +159,7 @@ class AgentController extends Controller
             abort(403, "Tu n'as pas l'autorisation d'accéder sur cette page");
         }
         $data = $request->validate([
-            "numAgent" => ["required", Rule::unique('agents', 'numAgent')->ignore($agent->id), "size:10"],
-            "nomAgent" => "required",
+            "certification" => "required",
         ]);
 
         $agent->update($data);

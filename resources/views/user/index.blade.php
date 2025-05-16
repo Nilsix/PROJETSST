@@ -26,22 +26,21 @@
     <table class="table table-bordered table-hover">
         <thead class="table-light">
             <tr>
+                <th>NumAgent</th>
                 <th>Nom</th>
                 <th>Email</th>
                 <th>Vision</th>
-                <th>Site</th>
-                <th>Certification</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach($users as $user)
                 <tr>
+                    <td>{{ $user->numAgent }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->vision }}</td>
-
-                    <td>{{ $user->certification ? 'Oui' : 'Non' }}</td>
+                    
                     <td>
                         <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary btn-sm">Modifier</a>
                         <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display:inline-block;">

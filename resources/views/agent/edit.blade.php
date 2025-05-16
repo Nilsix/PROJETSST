@@ -20,37 +20,7 @@
     <form method="post" action="{{route('agent.update',['agent'=>$agent])}}">
         @csrf
         @method('PUT')
-        <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">Numéro</label>
-            <div class="col-sm-6">
-                <input type="text" name="numAgent" class="form-control" value="{{ $agent->numAgent }}">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">Nom</label>
-            <div class="col-sm-6">
-                <input type="text" name="nomAgent" class="form-control" value="{{ $agent->nomAgent }}">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">Prénom</label>
-            <div class="col-sm-6">
-                <input type="text" name="prenomAgent" class="form-control" value="{{ $agent->prenomAgent }}">
-            </div>
-        </div>
-        <?php 
-        $user = auth()->user();
-        if($user->vision == 2){
-            echo "
-        <div class='row mb-3'>
-            <label class='col-sm-3 col-form-label'>Site</label>
-            <div class='col-sm-6'>
-                <input type='text' name='site' class='form-control' value='{{ $agent->site }}'>
-            </div>
-        </div>
-        ";
-        }
-        ?>
+        
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label">Certification</label>
             <div class="col-sm-6">
