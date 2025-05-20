@@ -18,9 +18,11 @@
             <div class="col sm-3 d-grid">
             <a class="btn btn-primary" href="{{route('agent.create')}}" >Ajouter un agent</a>
             </div>
+            @can('manage-users')
             <div class="col sm-3 d-grid">
             <a class="btn btn-primary" href="{{route('user.index')}}">Utilisateurs</a>
             </div>
+            @endcan
             <div class="col sm-3 d-grid">
             <a class="btn btn-secondary" href="{{route('dashboard')}}" >Retour à l'acceuil</a>
             </div>
@@ -38,7 +40,7 @@
             </thead>
             <tbody>
                 @foreach($agentsList as $agent)
-                @can('see-agent', $user, $agent,"")
+                @can('see-agent', [$agent['sitename'], $userSite])
                 <tr>
                     <td>{{$agent['numAgent']}}</td>
                     <td>{{$agent['nom']}}</td>

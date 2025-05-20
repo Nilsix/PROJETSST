@@ -12,27 +12,59 @@ use Illuminate\Support\Facades\Log;
 
 class AgentController extends Controller
 {
+    /**
+     * Affiche la liste des agents
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         $agents = Agent::all();
         $agentsList = [];
-        $user = auth()->user();
+        $user = auth()->user(); 
+        $userNum = $user->numAgent;
+        
+        \Log::info('num user var : '.$userNum);
+        
         $token = 'E3rsyX3gtpOb0EiUW5NuYSu55dAxDs8N';
+        $apiSite = "site random";
 
-        /*try{
+        try {
+            // Récupération des informations de l'utilisateur connecté
             $response = Http::withOptions([
-                'verify' => false ])->get('https://solo/urssaf/orchestra/api/', [
-                    'token' => $token,
-                    'type' => 'ldap',
-                    'agent' => $user->numAgent
+                'verify' => false
+            ])->get('https://solo.urssaf.recouv/orchestra/api/', [
+                'token' => $token,
+                'type' => 'ldap',
+                'agent' => $userNum
+            ]);
+
+            if ($response->successful() && !empty($response->json())) {
+                \Log::info('API request successful', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                    'json' => $response->json()
                 ]);
-            
-        }catch(Exception $e){
-            
-        }*/
+                
+                $data = $response->json()[0];
+                $apiSite = $data['sitename'];
+            } else {
+                \Log::error('API request failed', [
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
+            }
+        } catch (\Exception $e) {
+            \Log::error('API request exception:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
+
+        // Récupération des informations pour chaque agent
         foreach ($agents as $agent) {
             $numAgent = $agent->numAgent;
-           
+            
             try {
                 $response = Http::withOptions([
                     'verify' => false
@@ -44,9 +76,10 @@ class AgentController extends Controller
 
                 if ($response->successful() && !empty($response->json())) {
                     $agentData = $response->json()[0];
-                    \Log::info('Agent data from API:', ['data' => $agentData]);
+                    //\Log::info('Agent data from API:', ['data' => $agentData]);
+                    
                     $agentsList[] = [
-                        'numAgent' => $numAgent,
+                        'numAgent' => $agentData['numagent'],
                         'sitename' => $agentData["sitename"] ?? null,
                         'nom' => $agentData['nom'] ?? null,
                         'prenom' => $agentData['prenom'] ?? null,
@@ -82,19 +115,34 @@ class AgentController extends Controller
             }
         }
 
+        \Log::info('num user : '.$user->numAgent);
+        $userSite = $apiSite;
+        
         // Debug: Vérifier la structure des données
-        \Log::info('Agents list:', ['agents' => $agentsList]);
-
-        $user = auth()->user();
-        return view('agent.index', compact('agentsList', 'user'));
+        uasort($agentsList, function($a, $b){
+            return $a['sitename'] <=> $b['sitename'];
+        });
+        
+        return view('agent.index', compact('agentsList', 'user', 'userSite'));
     }
 
+    /**
+     * Affiche le formulaire de création d'un nouvel agent
+     *
+     * @return \Illuminate\View\View
+     */
     public function create()
     {
         $user = auth()->user();
         return view('agent.create', ["user" => $user]);
     }
 
+    /**
+     * Enregistre un nouvel agent
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $data = $request->validate([
