@@ -8,6 +8,16 @@
 <body>
 <div class="container my-5">
     <h1 class="text-primary">Modifier un agent</h1>
+    @if(session()->has('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+    @if(session()->has('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     @if($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -41,5 +51,17 @@
         </div>
     </form>
 </div>
+<script> 
+    setTimeout(()=>{
+        const flash = document.querySelectorAll(".alert");
+        if(flash){
+            flash.forEach(f => {
+                f.style.transition = "opacity 0.5s ease";
+                f.style.opacity = 0;
+                setTimeout(()=> f.remove(),500);
+            });
+        }
+    }, 3000);
+</script>
 </body>
 </html>

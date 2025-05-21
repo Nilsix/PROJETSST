@@ -21,9 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    //routes agent
     Route::resource('agent', AgentController::class);
-    Route::get('/agent/seeInfos', [AgentController::class, 'seeAgentInfos'])->name('agent.seeInfos');
-
     // Routes pour les utilisateurs
     Route::resource('user', UserController::class);
 });

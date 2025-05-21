@@ -11,36 +11,19 @@
 <div class="container my-5">
     
     <h1 class="text-primary">Modifier un utilisateur</h1>
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    @if(session()->has('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if(session()->has('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
     <form method="post" action="{{ route('user.update', $user->id) }}">
         @csrf
         @method('PUT')
-        <div class="row mb-3">
-            <label for="name" class="col-sm-3 col-form-label text-end">Nom</label>
-            <div class="col-sm-6">
-                <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" required>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="email" class="col-sm-3 col-form-label text-end">Email</label>
-            <div class="col-sm-6">
-                <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="password" class="col-sm-3 col-form-label text-end">Nouveau mot de passe</label>
-            <div class="col-sm-6">
-                <input type="password" name="password" class="form-control" placeholder="Laissez vide pour ne pas modifier">
-            </div>
-        </div>
         <div class="row mb-3">
             <label for="vision" class="col-sm-3 col-form-label text-end">Vision</label>
             <div class="col-sm-6">
@@ -53,7 +36,6 @@
             </div>
         </div>
         <div class="row mb-3">
-        <div class="row mb-3">
             <div class="offset-sm-3 col-sm-6">
                 <button type="submit" class="btn btn-primary">Mettre à jour</button>
                 <a href="{{ route('user.index') }}" class="btn btn-secondary">Retour</a>
@@ -61,14 +43,18 @@
         </div>
     </form>
 </div>
-
-
-        <div class="row mb-3">
-            <div class="offset-sm-3 col-sm-6">
-                <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                <a href="{{ route('user.index') }}" class="btn btn-secondary">Retour</a>
-            </div>
-        </div>
-    </form>
-</div>
+</body>
+<script> 
+setTimeout(()=>{
+    const flash = document.querySelectorAll(".alert");
+    if(flash){
+        flash.forEach(f => {
+            f.style.transition = "opacity 0.5s ease";
+            f.style.opacity = 0;
+            setTimeout(()=> f.remove(),500);
+        });
+    }
+}, 3000);
+</script>
+</html>
 

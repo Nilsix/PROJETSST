@@ -194,32 +194,95 @@ class AgentController extends Controller
     public function edit($id)
     {
         $agent = Agent::findOrFail($id);
-        if (Gate::denies('see-agent', $agent)) {
+        $userSite = $this->returnUserSite();
+        if (Gate::denies('see-agent', [$agent,$userSite])) {
             abort(403, "Tu n'as pas l'autorisation d'accéder sur cette page");
         }
         return view('agent.edit', ["agent" => $agent]);
     }
 
+  
+
     public function update($id, Request $request)
     {
         $agent = Agent::findOrFail($id);
-        if (Gate::denies('see-agent', $agent)) {
-            abort(403, "Tu n'as pas l'autorisation d'accéder sur cette page");
-        }
         $data = $request->validate([
             "certification" => "required",
         ]);
-
         $agent->update($data);
         return redirect()->route('agent.index')->with('success', 'Agent mis à jour avec succès');
     }
 
-    public function destroy(Agent $agent)
+    public function destroy($id)
     {
-        if (Gate::denies('see-agent', $agent)) {
+        $agent = Agent::findOrFail($id);
+        $userSite = $this->returnUserSite();
+        if (Gate::denies('see-agent',[$agent,$userSite])) {
             abort(403, "Tu n'as pas l'autorisation d'accéder sur cette page");
         }
         $agent->delete();
         return redirect()->route('agent.index')->with('success', 'Agent supprimé avec succès');
+    }
+
+    public function show($id)
+    {
+        $agent = Agent::findOrFail($id);
+        $agentData;
+        $userSite = $this->returnUserSite();
+        if(Gate::denies('see-agent', [$agent,$userSite])){
+            abort(403, "Tu n'as pas l'autorisation d'accéder sur cette page");
+        }
+        try{
+            $response = Http::withOptions([
+                'verify' => false
+            ])->get('https://solo.urssaf.recouv/orchestra/api/', [
+                'token' => "E3rsyX3gtpOb0EiUW5NuYSu55dAxDs8N",
+                'type' => 'ldap',
+                'agent' => $agent->numAgent
+            ]);
+            if ($response->successful() && !empty($response->json())) {
+                $data = $response->json()[0];
+                $agentData = [
+                    'numAgent' => $data['numagent'],
+                    'sitename' => $data["sitename"] ?? null,
+                    'nom' => $data['nom'] ?? null,
+                    'prenom' => $data['prenom'] ?? null,
+                    'email' => $data['email'] ?? null,
+                    'jobname' => $data['jobname'] ?? null,
+                    'servicename' => $data['servicename'] ?? null,
+                    'certification' => $agent->certification,
+                    'id' => $agent->id
+                ];
+                
+            }
+        }catch(Exception $e){
+            
+        }
+        return view('agent.show', ["agent" => $agentData]);
+    }
+
+    //Retourne le site de l'utilisateur
+    public function returnUserSite(){
+        $user = auth()->user();
+        $userSite;
+        try {
+            $response = Http::withOptions([
+                'verify' => false
+            ])->get('https://solo.urssaf.recouv/orchestra/api/', [
+                'token' => "E3rsyX3gtpOb0EiUW5NuYSu55dAxDs8N",
+                'type' => 'ldap',
+                'agent' => $user->numAgent
+            ]);
+
+            if ($response->successful() && !empty($response->json())) {
+                $data = $response->json()[0];
+                $userSite = $data['sitename'];
+            } else {
+                $userSite = null;
+            }
+        } catch (Exception $e) {
+            $userSite = null;
+        }
+        return $userSite;
     }
 }

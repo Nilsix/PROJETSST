@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 </head>
 <body>
     <div class="container">
+        @if(session()->has('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         @if(session()->has('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -57,11 +64,12 @@
                     </td>
                     
                     <td>
-                        <a href="{{route('agent.edit', $agent['id'])}}" class='btn btn-primary'>Modifier</a>
+                        <a href="{{route('agent.show', $agent['id'])}}" class='btn btn-info'><i class="bi bi-info-circle"></i></a>
+                        <a href="{{route('agent.edit', $agent['id'])}}" class='btn btn-primary'><i class="bi bi-pencil"></i></a>
                         <form action="{{ route('agent.destroy', $agent['id']) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet agent ?')">Supprimer</button>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet agent ?')"><i class="bi bi-trash"></i></button>
                         </form>
                     </td>
                 </tr>

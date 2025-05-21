@@ -9,21 +9,32 @@
 <div class="container my-5">
     
     <h1 class="text-primary">Ajouter un agent</h1>
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error}}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    @if(session()->has('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if(session()->has('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
     <form method="post" action="{{route('agent.store')}}">
         @csrf
         <div class="row mb-3 align-items-center">
             <label for="numAgent" class="col-sm-3 col-form-label text-end">Numéro agent</label>
             <div class="col-sm-6">
                 <input type="text" name="numAgent" class="form-control" required>
+            </div>
+        </div>
+        <div class="row mb-3 align-items-center">
+            <label for="certification" class="col-sm-3 col-form-label text-end">Certification</label>
+            <div class="col-sm-6">
+                <select name="certification" class="form-control" required>
+                    <option value="">Sélectionner</option>
+                    <option value="1">Oui</option>
+                    <option value="0">Non</option>
+                </select>
             </div>
         </div>
 
@@ -38,6 +49,18 @@
         </div>
     </form>
 </div>
+<script> 
+    setTimeout(()=>{
+        const flash = document.querySelectorAll(".alert");
+        if(flash){
+            flash.forEach(f => {
+                f.style.transition = "opacity 0.5s ease";
+                f.style.opacity = 0;
+                setTimeout(()=> f.remove(),500);
+            });
+        }
+    }, 3000);
+</script>
 </body>
 </html>
 

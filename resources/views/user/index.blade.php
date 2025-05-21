@@ -8,9 +8,16 @@
 <body>
 <div class="container my-5">
     <h1 class="text-primary">Liste des utilisateurs</h1>
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    @if(session()->has('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if(session()->has('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
     <div class="row mb-4">
         <div class="col-sm-3 d-grid">
             <a href="{{ route('user.create') }}" class="btn btn-success">Ajouter un utilisateur</a>
@@ -54,5 +61,18 @@
         </tbody>
     </table>
 </div>
-
+</body>
+<script> 
+setTimeout(()=>{
+    const flash = document.querySelectorAll(".alert");
+    if(flash){
+        flash.forEach(f => {
+            f.style.transition = "opacity 0.5s ease";
+            f.style.opacity = 0;
+            setTimeout(()=> f.remove(),500);
+        });
+    }
+}, 3000);
+</script>
+</html>
 
