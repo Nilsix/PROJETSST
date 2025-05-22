@@ -2,68 +2,81 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Test Bootstrap PHP</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Ajouter un agent</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-top: 40px;
+        }
+    </style>
 </head>
 <body>
-<div class="container my-5">
-    
-    <h1 class="text-primary">Ajouter un agent</h1>
-    @if(session()->has('error'))
-            <div class="alert alert-danger">
+<div class="container">
+    <div class="form-card mx-auto col-md-8">
+        <h1 class="text-primary text-center mb-4"><i class="bi bi-person-badge"></i> Ajouter un agent</h1>
+
+        @if(session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
         @if(session()->has('success'))
-            <div class="alert alert-success">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
-    <form method="post" action="{{route('agent.store')}}">
-        @csrf
-        <div class="row mb-3 align-items-center">
-            <label for="numAgent" class="col-sm-3 col-form-label text-end">Numéro agent</label>
-            <div class="col-sm-6">
-                <input type="text" name="numAgent" class="form-control" required>
-            </div>
-        </div>
-        <div class="row mb-3 align-items-center">
-            <label for="certification" class="col-sm-3 col-form-label text-end">Certification</label>
-            <div class="col-sm-6">
-                <select name="certification" class="form-control" required>
-                    <option value="">Sélectionner</option>
-                    <option value="1">Oui</option>
-                    <option value="0">Non</option>
-                </select>
-            </div>
-        </div>
 
-        <div class="row mb-3">
-            <div class="offset-sm-3 col-sm-3 d-grid">
-                <button type="submit" class="btn btn-primary">Ajouter</button>
+        <form method="post" action="{{ route('agent.store') }}">
+            @csrf
+            <div class="mb-3 row">
+                <label for="numAgent" class="col-sm-3 col-form-label text-end">Numéro agent</label>
+                <div class="col-sm-9">
+                    <input type="text" name="numAgent" class="form-control" required>
+                </div>
             </div>
-
-            <div class="col-sm-3 d-grid">
-                <a href="{{route('agent.index')}}" class="btn btn-secondary d-inline">Annuler</a>
+            <div class="mb-3 row">
+                <label for="certification" class="col-sm-3 col-form-label text-end">Certification</label>
+                <div class="col-sm-9">
+                    <select name="certification" class="form-select" required>
+                        <option value="">Sélectionner</option>
+                        <option value="1">Oui</option>
+                        <option value="0">Non</option>
+                    </select>
+                </div>
             </div>
-        </div>
-    </form>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary me-2">
+                    <i class="bi bi-plus-circle"></i> Ajouter
+                </button>
+                <a href="{{ route('agent.index') }}" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> Annuler
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
-<script> 
-    setTimeout(()=>{
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    setTimeout(() => {
         const flash = document.querySelectorAll(".alert");
-        if(flash){
-            flash.forEach(f => {
-                f.style.transition = "opacity 0.5s ease";
-                f.style.opacity = 0;
-                setTimeout(()=> f.remove(),500);
-            });
-        }
+        flash.forEach(f => {
+            f.style.transition = "opacity 0.5s ease";
+            f.style.opacity = 0;
+            setTimeout(() => f.remove(), 500);
+        });
     }, 3000);
 </script>
 </body>
 </html>
-
-
-
-

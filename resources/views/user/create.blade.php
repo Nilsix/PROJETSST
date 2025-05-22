@@ -1,57 +1,78 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Créer un utilisateur</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-top: 40px;
+        }
+    </style>
 </head>
 <body>
-<div class="container my-5">
-    <h1 class="text-primary">Créer un utilisateur</h1>
-    @if(session()->has('error'))
-            <div class="alert alert-danger">
+<div class="container">
+    <div class="form-card mx-auto col-md-8">
+        <h1 class="text-primary text-center mb-4"><i class="bi bi-person-plus"></i> Créer un utilisateur</h1>
+
+        @if(session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
         @if(session()->has('success'))
-            <div class="alert alert-success">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
-    <form method="post" action="{{ route('user.store') }}">
-        @csrf
-        <div class="row mb-3">
-            <label for="numAgent" class="col-sm-3 col-form-label text-end">Numéro agent</label>
-            <div class="col-sm-6">
-                <input type="text" name="numAgent" class="form-control" value="{{ old('numAgent') }}" required>
-            </div>
-        </div>
-        
-        <div class="row mb-3">
-            <label for="password" class="col-sm-3 col-form-label text-end">Mot de passe</label>
-            <div class="col-sm-6">
-                <input type="password" name="password" class="form-control" required>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="vision" class="col-sm-3 col-form-label text-end">Vision</label>
-            <div class="col-sm-6">
-                <select name="vision" class="form-control" required>
-                    <option value="">Sélectionner</option>
-                    <option value="1" {{ old('vision') == 1 ? 'selected' : '' }}>Local</option>
-                    <option value="2" {{ old('vision') == 2 ? 'selected' : '' }}>Global</option>
-                    <option value="3" {{ old('vision') == 3 ? 'selected' : '' }}>Super admin</option>
-                </select>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="offset-sm-3 col-sm-6">
-                <button type="submit" class="btn btn-success">Créer</button>
-                <a href="{{ route('user.index') }}" class="btn btn-secondary">Retour</a>
-            </div>
-        </div>
-    </form>
-</div>
 
+        <form method="post" action="{{ route('user.store') }}">
+            @csrf
+            <div class="mb-3 row">
+                <label for="numAgent" class="col-sm-3 col-form-label text-end">Numéro agent</label>
+                <div class="col-sm-9">
+                    <input type="text" name="numAgent" class="form-control" value="{{ old('numAgent') }}" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="password" class="col-sm-3 col-form-label text-end">Mot de passe</label>
+                <div class="col-sm-9">
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="vision" class="col-sm-3 col-form-label text-end">Vision</label>
+                <div class="col-sm-9">
+                    <select name="vision" class="form-select" required>
+                        <option value="">Sélectionner</option>
+                        <option value="1" {{ old('vision') == 1 ? 'selected' : '' }}>Local</option>
+                        <option value="2" {{ old('vision') == 2 ? 'selected' : '' }}>Global</option>
+                        <option value="3" {{ old('vision') == 3 ? 'selected' : '' }}>Super admin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-success me-2">
+                    <i class="bi bi-check-circle"></i> Créer
+                </button>
+                <a href="{{ route('user.index') }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Retour
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
