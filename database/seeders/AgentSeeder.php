@@ -16,7 +16,7 @@ class AgentSeeder extends Seeder
     public function run(): void
     {
         // Créer 10 agents valides
-        $json = file_get_contents(public_path('protection.sst.json'));
+        $json = file_get_contents(public_path('protection_sst.json'));
         $agents = json_decode($json, true);
         $token = 'E3rsyX3gtpOb0EiUW5NuYSu55dAxDs8N';
         foreach ($agents as $agent) {
@@ -33,13 +33,11 @@ class AgentSeeder extends Seeder
                     $agentData = $response->json()[0];
                     Agent::updateOrCreate([
                         'numAgent' => $agent['numagent'],
-                        'certification' => 3
                     ]);
                 } else {
                     // Création ou mise à jour de l'agent si la requête échoue
                     Agent::updateOrCreate([
                         'numAgent' => $agent['numagent'],
-                        'certification' => 3
                     ]);
                 }
             } catch (Exception $e) {

@@ -21,7 +21,7 @@
 </head>
 <body>
 <div class="container">
-    <div class="form-card mx-auto col-md-8">
+    <div class="form-card mx-auto col-md-8"">
         <h1 class="text-primary text-center mb-4"><i class="bi bi-person-badge"></i> Ajouter un agent</h1>
 
         @if(session()->has('error'))
@@ -45,16 +45,7 @@
                     <input type="text" name="numAgent" class="form-control" required>
                 </div>
             </div>
-            <div class="mb-3 row">
-                <label for="certification" class="col-sm-3 col-form-label text-end">Certification</label>
-                <div class="col-sm-9">
-                    <select name="certification" class="form-select" required>
-                        <option value="">Sélectionner</option>
-                        <option value="1">Oui</option>
-                        <option value="0">Non</option>
-                    </select>
-                </div>
-            </div>
+
             <div class="text-center mt-4">
                 <button type="submit" class="btn btn-primary me-2">
                     <i class="bi bi-plus-circle"></i> Ajouter

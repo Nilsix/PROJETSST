@@ -69,6 +69,7 @@
                 <tr>
                     <th scope="col">NumAgent</th>
                     <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
                     <th scope="col">Email</th>
                     <th scope="col">Vision</th>
                     <th scope="col" class="text-center">Actions</th>
@@ -78,9 +79,16 @@
                 @foreach($users as $user)
                 <tr>
                     <td>{{ $user->numAgent }}</td>
-                    <td>{{ $user->name }}</td>
+                    <td>{{ explode(" ", $user->name)[0] }}</td>
+                    <td>{{ explode(" ", $user->name)[1] }}</td>
                     <td>{{ $user->email }}</td>
-                    <td>{{ $user->vision }}</td>
+                    @if($user->vision == 1)
+                    <td>Local</td>
+                    @elseif($user->vision == 2)
+                    <td>Global</td>
+                    @elseif($user->vision == 3)
+                    <td>Admin</td>
+                    @endif
                     <td class="text-center">
                         <a href="{{ route('user.edit', $user->id) }}" class="btn btn-outline-primary btn-sm me-1" title="Modifier">
                             <i class="bi bi-pencil"></i>

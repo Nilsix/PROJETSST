@@ -73,7 +73,9 @@
                     <th scope="col">Nom</th>
                     <th scope="col">Prénom</th>
                     <th scope="col">Site</th>
-                    <th scope="col">Certification</th>
+                    <th scope="col">Branche</th>
+                    <th scope="col">Direction</th>
+                    
                     <th scope="col" class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -81,25 +83,16 @@
                 @foreach($agentsList as $agent)
                 @can('see-agent', [$agent['sitename'], $userSite])
                 <tr>
-                    <td>{{ $agent['numAgent'] }}</td>
+                    <td>{{ $agent['numagent'] }}</td>
                     <td>{{ $agent['nom'] }}</td>
                     <td>{{ $agent['prenom'] }}</td>
                     <td>{{ $agent['sitename'] }}</td>
-                    <td>
-                        @if($agent['certification'] == 1)
-                            <span class="badge bg-success">Oui</span>
-                        @elseif($agent['certification'] == 2)
-                            <span class="badge bg-danger">Non</span>
-                        @else
-                            <span class="badge bg-secondary">Vide</span>
-                        @endif
-                    </td>
+                    <td>{{ $agent['branchcode'] }}</td>
+                    <td>{{ $agent['directioncode'] }}</td>
+    
                     <td class="text-center">
                         <a href="{{ route('agent.show', $agent['id']) }}" class="btn btn-outline-info btn-sm me-1" title="Détails">
                             <i class="bi bi-info-circle"></i>
-                        </a>
-                        <a href="{{ route('agent.edit', $agent['id']) }}" class="btn btn-outline-primary btn-sm me-1" title="Modifier">
-                            <i class="bi bi-pencil"></i>
                         </a>
                         <form action="{{ route('agent.destroy', $agent['id']) }}" method="POST" class="d-inline">
                             @csrf

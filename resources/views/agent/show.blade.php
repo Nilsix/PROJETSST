@@ -107,25 +107,34 @@
                                 <div class="info-item">
                                     <i class="bi bi-person-badge"></i>
                                     <span class="info-label">Matricule:</span>
-                                    <span class="info-value">{{ $agent['numAgent'] ?? 'Non renseigné' }}</span>
+                                    <span class="info-value">{{ $agent['numagent'] }}</span>
                                 </div>
                                 
                                 <div class="info-item">
                                     <i class="bi bi-person-vcard"></i>
                                     <span class="info-label">Nom:</span>
-                                    <span class="info-value">{{ $agent['nom'] ?? 'Non renseigné' }}</span>
+                                    <span class="info-value">{{ $agent['nom'] }}</span>
                                 </div>
                                 
                                 <div class="info-item">
                                     <i class="bi bi-person"></i>
                                     <span class="info-label">Prénom:</span>
-                                    <span class="info-value">{{ $agent['prenom'] ?? 'Non renseigné' }}</span>
+                                    <span class="info-value">{{ $agent['prenom'] }}</span>
                                 </div>
                                 
                                 <div class="info-item">
                                     <i class="bi bi-envelope"></i>
                                     <span class="info-label">Email:</span>
-                                    <span class="info-value">{{ $agent['email'] ?? 'Non renseigné' }}</span>
+                                    <span class="info-value">{{ $agent['email'] }}</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="bi bi-phone"></i>
+                                    <span class="info-label">Téléphone:</span>
+                                    @if($agent['mobile'] != null)
+                                    <span class="info-value">{{ $agent['mobile'] }}</span>
+                                    @else
+                                    <span class="info-value">{{ $agent['telephone'] }}</span>
+                                    @endif
                                 </div>
                             </div>
                             
@@ -133,26 +142,31 @@
                                 <div class="info-item">
                                     <i class="bi bi-building"></i>
                                     <span class="info-label">Site:</span>
-                                    <span class="info-value">{{ $agent['sitename'] ?? 'Non renseigné' }}</span>
+                                    <span class="info-value">{{ $agent['sitename'] }}</span>
                                 </div>
                                 
                                 <div class="info-item">
                                     <i class="bi bi-person-workspace"></i>
                                     <span class="info-label">Fonction:</span>
-                                    <span class="info-value">{{ $agent['jobname'] ?? 'Non renseignée' }}</span>
+                                    <span class="info-value">{{ $agent['jobname'] }}</span>
                                 </div>
                                 <div class="info-item">
                                     <i class="bi bi-person-workspace"></i>
                                     <span class="info-label">Service : </span>
                                     <span class="info-value"> {{$agent['servicename']}}</span>
-    </div>
-                                <div class="info-item">
-                                    <i class="bi bi-award"></i>
-                                    <span class="info-label">Certification:</span>
-                                    <span class="info-value">
-                                        {{ $agent['certification'] ? 'Oui' : 'Non' }}
-                                    </span>
                                 </div>
+                                <div class="info-item">
+                                    <i class="bi bi-person-workspace"></i>
+                                    <span class="info-label">Branche </span>
+                                    <span class="info-value"> {{$agent['branchcode']}}</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <i class="bi bi-person-workspace"></i>
+                                    <span class="info-label">Direction : </span>
+                                    <span class="info-value"> {{$agent['directionname']}}</span>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>

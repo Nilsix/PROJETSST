@@ -25,50 +25,7 @@ class UserController extends Controller
         $agentsList = [];
 
         foreach ($agents as $agent) {
-            $numAgent = $agent->numAgent;
-            $token = 'E3rsyX3gtpOb0EiUW5NuYSu55dAxDs8N';
-
-            try {
-                $response = Http::withOptions([
-                    'verify' => false
-                ])->get('https://solo.urssaf.recouv/orchestra/api/', [
-                    'token' => $token,
-                    'type' => 'ldap',
-                    'agent' => $numAgent
-                ]);
-
-                if ($response->successful() && !empty($response->json())) {
-                    $agentData = $response->json()[0];
-                    \Log::info('Agent data from API:', ['data' => $agentData]);
-                    $agentsList[] = [
-                        'numAgent' => $numAgent,
-
-                        'nom' => $agentData['nom'] ?? null,
-                        'prenom' => $agentData['prenom'] ?? null,
-                        'email' => $agentData['email'] ?? null,
-                        'fonction' => $agentData['fonction'] ?? null
-                    ];
-                } else {
-                    $agentsList[] = [
-                        'numAgent' => $numAgent,
-
-                        'nom' => null,
-                        'prenom' => null,
-                        'email' => null,
-                        'fonction' => null
-                    ];
-                }
-            } catch (Exception $e) {
-                // En cas d'erreur, on conserve les données de base
-                $agentsList[] = [
-                    'numAgent' => $numAgent,
-                    'sitename' => $agent->nomSite,
-                    'nom' => null,
-                    'prenom' => null,
-                    'email' => null,
-                    'fonction' => null
-                ];
-            }
+            $agentsList[] = AgentController::callAgentApi($agent->id,$agent->numAgent);
         }
 
         return view('user.create', compact('agentsList'));
@@ -77,8 +34,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'numAgent' => 'required|string|max:255',
-            'password' => 'required|string|min:6',
+            'numAgent' => 'required',
+            'password' => 'required|string|min:8',
             'vision' => 'required|integer|min:1|max:3',
         ]);
        
@@ -97,7 +54,7 @@ class UserController extends Controller
             $validated['email'] = $agentData['email'];
             User::create($validated);
         } else {
-            return redirect()->route('user.index')->with('error', 'Utilisateur non trouvé');
+            return redirect()->back()->with('error', 'Agent non trouvé');
         }
         
         return redirect()->route('user.index')->with('success', 'Utilisateur créé avec succès');

@@ -11,11 +11,8 @@ class Agent extends Model
     use HasFactory;
     
     protected $fillable = [
-        'numAgent',
-        'certification'
+        'numAgent'
     ];
 
-    protected $casts = [
-        'certification' => 'integer'
-    ];
+    protected $casts = [];
 }
