@@ -119,10 +119,6 @@ class AgentController extends Controller
     public function show($id)
     {
         $agent = Agent::findOrFail($id);
-        $userSite = $this->returnUserSite();
-        if(Gate::denies('see-agent', [$agent,$userSite])){
-            abort(403, "Tu n'as pas l'autorisation d'accéder sur cette page");
-        }
         $agentData = $this->callAgentApi($id,$agent->numAgent);
         return view('agent.show', ["agent" => $agentData]);
     }
