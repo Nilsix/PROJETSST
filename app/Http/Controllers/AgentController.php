@@ -32,10 +32,6 @@ class AgentController extends Controller
         uasort($agentsList, function($a, $b){
             return $a['sitename'] <=> $b['sitename'];
         });
-        foreach($agentsList as $agent){
-            Log::info("agent : ".$agent['id']);
-        }
-        Log::info("test");
         return view('agent.index', compact('agentsList','userSite'));
     }
 
@@ -73,6 +69,7 @@ class AgentController extends Controller
             }
 
             $agent = $response->json()[0];
+            
             Agent::create([
                 "numAgent" => $numAgent,
                 "certification" => $data["certification"]
@@ -86,9 +83,10 @@ class AgentController extends Controller
     public function edit($id)
     {
         $agent = Agent::findOrFail($id);
+        $agentAPI = $this->callAgentApi($id,$agent->numAgent);
         $userSite = $this->returnUserSite();
-        if (Gate::denies('see-agent', [$agent,$userSite])) {
-            abort(403, "Tu n'as pas l'autorisation d'accéder sur cette page");
+        if (Gate::denies('see-agent', [$agentAPI["sitename"],$userSite])) {
+            return redirect()->route('agent.index')->with('error', 'Tu n\'as pas l\'autorisation d\'accéder sur cette page');
         }
         return view('agent.edit', ["agent" => $agent]);
     }
@@ -108,9 +106,10 @@ class AgentController extends Controller
     public function destroy($id)
     {
         $agent = Agent::findOrFail($id);
+        $agentAPI = $this->callAgentApi($id,$agent->numAgent);
         $userSite = $this->returnUserSite();
-        if (Gate::denies('see-agent',[$agent,$userSite])) {
-            abort(403, "Tu n'as pas l'autorisation d'accéder sur cette page");
+        if (Gate::denies('see-agent',[$agentAPI["sitename"],$userSite])) {
+            return redirect()->route('agent.index')->with('error', 'Tu n\'as pas l\'autorisation d\'accéder sur cette page');
         }
         $agent->delete();
         return redirect()->route('agent.index')->with('success', 'Agent supprimé avec succès');
@@ -118,7 +117,12 @@ class AgentController extends Controller
 
     public function show($id)
     {
+        $userSite = $this->returnUserSite();
         $agent = Agent::findOrFail($id);
+        $agentAPI = $this->callAgentApi($id,$agent->numAgent);
+        if (Gate::denies('see-agent',[$agentAPI["sitename"],$userSite])) {
+            abort(403, "Tu n'as pas l'autorisation d'accéder sur cette page");
+        }
         $agentData = $this->callAgentApi($id,$agent->numAgent);
         return view('agent.show', ["agent" => $agentData]);
     }

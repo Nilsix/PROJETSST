@@ -6,16 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\Agent;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
-
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
-        $users = \App\Models\User::all();
+        if(Gate::denies('manage-users')){
+            return redirect()->route('agent.index')->with('error', 'Tu n\'as pas l\'autorisation d\'accéder sur cette page');
+        }
+        $users = User::all();
         return view('user.index', compact('users'));
     }
 
@@ -23,7 +24,6 @@ class UserController extends Controller
     {
         $agents = Agent::all();
         $agentsList = [];
-
         foreach ($agents as $agent) {
             $agentsList[] = AgentController::callAgentApi($agent->id,$agent->numAgent);
         }
@@ -62,12 +62,12 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $user = \App\Models\User::findOrFail($id);
+        $user = User::findOrFail($id);
         return view('user.edit', compact('user'));
     }
     public function update(Request $request, $id)
     {
-        $user = \App\Models\User::findOrFail($id);
+        $user = User::findOrFail($id);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
