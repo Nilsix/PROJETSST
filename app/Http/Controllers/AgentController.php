@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+
 
 class AgentController extends Controller
 {
@@ -57,22 +59,23 @@ class AgentController extends Controller
         try{
         $data = $request->validate([
             "numAgent" => "required|unique:agents,numAgent|size:10",
-            "certification" => "integer",
         ], [
             "numAgent.required" => "Le numéro de l'agent est requis",
             "numAgent.size" => "Le numéro de l'agent doit contenir exactement 10 caractères"
         ]);
+        $numAgent = $data["numAgent"];
             // Vérifier si l'agent existe déjà dans la base de données
             $existingAgent = Agent::where('numAgent', $numAgent)->first();
             if ($existingAgent) {
                 throw new \Exception('Cet agent existe déjà dans la base de données');
             }
-
-            $agent = $response->json()[0];
-            
+            $agent = $this->callAgentApi(0,$numAgent);
+            $userSite = $this->returnUserSite();
+            if(Gate::denies('see-agent', [$agent["sitename"],$userSite])){
+                return redirect()->route('agent.index')->with('error', 'Vous n\'avez pas l\'autorisation d\'ajouter un agent de ce site');
+            }
             Agent::create([
                 "numAgent" => $numAgent,
-                "certification" => $data["certification"]
             ]);
             return redirect()->route('agent.index')->with('success', 'Agent ajouté avec succès');
         } catch (\Exception $e) {
@@ -127,7 +130,11 @@ class AgentController extends Controller
         return view('agent.show', ["agent" => $agentData]);
     }
 
-    public static function callAgentApi($id,$numAgent){
+    
+
+public static function callAgentApi($id, $numAgent)
+{
+    return Cache::remember("agent_api_{$numAgent}", 300, function () use ($id, $numAgent) {
         try {
             $response = Http::withOptions([
                 'verify' => false
@@ -140,13 +147,14 @@ class AgentController extends Controller
                 $data = $response->json()[0];
                 $data['id'] = $id;
                 return $data;
-            } else {
-                return null;
             }
         } catch (Exception $e) {
-            return null;
+            Log::error("Erreur appel API pour agent $numAgent : ".$e->getMessage());
         }
-    }
+        return null;
+    });
+}
+
     //Retourne le site de l'utilisateur
     public function returnUserSite(){
         $user = auth()->user();
