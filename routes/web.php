@@ -9,8 +9,8 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
-    return view('auth.login');
-});
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 
 Route::get('/dashboard', function () {
@@ -26,6 +26,11 @@ Route::middleware('auth')->group(function () {
     // Routes pour les utilisateurs
     Route::resource('user', UserController::class);
 });
+
+Route::get('/login', function () {
+    return view('auth.login');
+})->middleware('guest')->name('login');
+
 // Auth routes
 /*Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);

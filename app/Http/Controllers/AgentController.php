@@ -30,9 +30,15 @@ class AgentController extends Controller
         }
 
         $userSite = $this->returnUserSite();
-        // Debug: Vérifier la structure des données
-        uasort($agentsList, function($a, $b){
-            return $a['sitename'] <=> $b['sitename'];
+        // Tri des agents par site puis par nom de famille
+        uasort($agentsList, function($a, $b) {
+            // D'abord tri par site
+            $siteCompare = strcmp($a['sitename'], $b['sitename']);
+            if ($siteCompare !== 0) {
+                return $siteCompare;
+            }
+            // Si même site, tri par nom de famille
+            return strcmp($a['nom'], $b['nom']);
         });
         return view('agent.index', compact('agentsList','userSite'));
     }
@@ -79,7 +85,7 @@ class AgentController extends Controller
             ]);
             return redirect()->route('agent.index')->with('success', 'Agent ajouté avec succès');
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', $e->getMessage());
+            return redirect()->back()->withInput()->with('error', "Agent non trouvé");
         }
     }
 
@@ -134,7 +140,7 @@ class AgentController extends Controller
 
 public static function callAgentApi($id, $numAgent)
 {
-    return Cache::remember("agent_api_{$numAgent}", 300, function () use ($id, $numAgent) {
+    return Cache::remember("agent_api_{$numAgent}", 28800, function () use ($id, $numAgent) {
         try {
             $response = Http::withOptions([
                 'verify' => false
@@ -149,7 +155,7 @@ public static function callAgentApi($id, $numAgent)
                 return $data;
             }
         } catch (Exception $e) {
-            Log::error("Erreur appel API pour agent $numAgent : ".$e->getMessage());
+            return redirect()->back()->with('error', 'Erreur lors de l\'appel de l\'API');
         }
         return null;
     });

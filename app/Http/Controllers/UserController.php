@@ -69,20 +69,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:6',
             'vision' => 'required|integer|min:1|max:3',
-            'nomSite' => 'nullable|string|max:255',
-        ]);
-        
-        // Seulement si un nouveau mot de passe est fourni
-        if ($request->filled('password')) {
-            $validated['password'] = bcrypt($validated['password']);
-        } else {
-            unset($validated['password']);
-        }
-        
+        ]); 
         $user->update($validated);
         return redirect()->route('user.index')->with('success', 'Utilisateur mis à jour avec succès');
     }
